@@ -23,7 +23,7 @@ module.exports = (type) => {
     {
       loader: require.resolve('postcss-loader'),
       options: {
-        plugins: [require('autoprefixer'), require('postcss-discard-comments')]
+        plugins: [require('postcss-discard-comments')]
       }
     }
   ];
@@ -118,15 +118,15 @@ module.exports = (type) => {
         template: './src/templates/index.ejs',
         filename: 'index.html'
       }),
-      isDist &&
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorOptions: {
-            parser: require('postcss-safe-parser'),
-            discardComments: {
-              removeAll: true
-            }
-          }
-        }),
+      // isDist &&
+      //   new OptimizeCSSAssetsPlugin({
+      //     // cssProcessorOptions: {
+      //     //   parser: require('postcss-safe-parser'),
+      //     //   discardComments: {
+      //     //     removeAll: true
+      //     //   }
+      //     // }
+      //   }),
       // isDist &&
       new MiniCssExtractPlugin({
         filename: `bundle/${pkgJson.version}/[name].css`,
