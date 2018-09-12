@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Alert from '../../../components/Alert'
+import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 
-export interface EnrollProps { }
+export interface EnrollProps {}
 
 class Enroll extends React.Component<EnrollProps, any> {
   public render() {
@@ -169,7 +169,7 @@ class Enroll extends React.Component<EnrollProps, any> {
           */}
         </div>
       </div>
-    )
+    );
   }
 }
 
