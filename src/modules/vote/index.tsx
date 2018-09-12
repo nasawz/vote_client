@@ -21,6 +21,10 @@ let Enroll = loadable({
   loader: () => import(/* webpackChunkName: "enroll" */ './pages/enroll'),
   loading: LoadingComponent
 });
+let Rank = loadable({
+  loader: () => import(/* webpackChunkName: "rank" */ './pages/rank'),
+  loading: LoadingComponent
+});
 
 export interface PageProps {
   match;
@@ -38,6 +42,7 @@ class Page extends React.Component<PageProps, any> {
         <Route path={`${match.url}/list`} component={List} />
         <Route path={`${match.url}/info`} component={Info} />
         <Route path={`${match.url}/enroll`} component={Enroll} />
+        <Route path={`${match.url}/rank`} component={Rank} />
       </div>
     );
   }
