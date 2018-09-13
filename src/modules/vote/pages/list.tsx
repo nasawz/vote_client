@@ -10,10 +10,14 @@ import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
 export interface ListProps {
   activity: any;
+  history?;
 }
 class List extends React.Component<ListProps, any> {
+  goOpus() {
+    this.props.history.push(`/vote/opus`);
+  }
   public render() {
-    let { activity, children } = this.props;
+    let { activity, children, history } = this.props;
     let opus_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
     let vote_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
     if (!activity) return <div />;
@@ -27,6 +31,7 @@ class List extends React.Component<ListProps, any> {
             <ActivityIntro />
             <CountDown time="6天 22:48:19">
               <button
+                onClick={this.goOpus.bind(this)}
                 className="Header__apply-btn"
                 style={{
                   borderColor: 'rgb(57, 150, 246)',
@@ -39,7 +44,7 @@ class List extends React.Component<ListProps, any> {
             <Category categories={activity.categorys} />
             <RankBtn
               hander_rank_btn={() => {
-                console.log('去榜单');
+                history.push(`/vote/rank`);
               }}
             />
           </div>
