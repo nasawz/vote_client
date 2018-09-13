@@ -20,7 +20,6 @@ class App extends React.Component<AppProps, any> {
   componentDidMount() {}
   public render() {
     const { match, location, theme } = this.props;
-    console.log(match.url);
     const isRoot = location.pathname === '/' ? true : false;
     if (isRoot) {
       return <Redirect to={'/vote/list'} />;
