@@ -2,9 +2,9 @@ import * as React from 'react';
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 
-export interface EnrollProps {}
+export interface OpusProps {}
 
-class Enroll extends React.Component<EnrollProps, any> {
+class Opus extends React.Component<OpusProps, any> {
   public render() {
     return (
       <div>
@@ -177,4 +177,4 @@ const mapState2Props = (state) => {
   return {};
 };
 
-export default connect(mapState2Props)(Enroll);
+export default connect(mapState2Props)(Opus);

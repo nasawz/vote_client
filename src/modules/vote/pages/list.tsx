@@ -11,17 +11,17 @@ class List extends React.Component<ListProps, any> {
     /**
      * 上传文件的例子
      */
-    // let file = e.target.files[0];
-    // let name = file.name;
-    // let parseFile = new Parse.File(name, file);
-    // parseFile.save().then(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
+    let file = e.target.files[0];
+    let name = file.name;
+    let parseFile = new Parse.File(name, file);
+    parseFile.save().then(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   public render() {

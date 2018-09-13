@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-export interface InfoProps { }
+export interface InfoProps {}
 
 class Info extends React.Component<InfoProps, any> {
   public render() {
@@ -126,7 +126,7 @@ class Info extends React.Component<InfoProps, any> {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
