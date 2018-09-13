@@ -25,6 +25,10 @@ let Rank = loadable({
   loader: () => import(/* webpackChunkName: "rank" */ './pages/rank'),
   loading: LoadingComponent
 });
+let Me = loadable({
+  loader: () => import(/* webpackChunkName: "me" */ './pages/me'),
+  loading: LoadingComponent
+});
 
 export interface PageProps {
   match;
@@ -43,6 +47,7 @@ class Page extends React.Component<PageProps, any> {
         <Route path={`${match.url}/info`} component={Info} />
         <Route path={`${match.url}/opus`} component={Opus} />
         <Route path={`${match.url}/rank`} component={Rank} />
+        <Route path={`${match.url}/me`} component={Me} />
       </div>
     );
   }
