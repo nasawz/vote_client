@@ -2642,7 +2642,7 @@ input:focus {
   -ms-flex-align: center;
   align-items: center;
   z-index: 1000;
-  margin: 0 -0.266667rem;
+  // margin: 0 -0.266667rem;
 }
 
 .Pub__btn {
@@ -3048,6 +3048,10 @@ input:focus {
   box-sizing: border-box;
 }
 
+.PubImgUpload__add-img.disabled {
+  opacity: .5;
+}
+
 .PubImgUpload__close-icon {
   color: #fff;
   position: absolute;
@@ -3169,6 +3173,16 @@ input:focus {
   line-height: 48px;
   height: 48px;
   font-size: 30px;
+}
+
+.PubImgUpload__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 .PubImgUpload__loading-wrap {
