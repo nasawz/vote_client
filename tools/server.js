@@ -1,22 +1,22 @@
-const express = require("express");
+const express = require('express');
 
-const devMiddleware = require("webpack-dev-middleware");
-const hotMiddleware = require("webpack-hot-middleware");
+const devMiddleware = require('webpack-dev-middleware');
+const hotMiddleware = require('webpack-hot-middleware');
 
-const getConfig = require("./webpack-config");
-const webpack = require("webpack");
-const config = require("./config");
+const getConfig = require('./webpack-config');
+const webpack = require('webpack');
+const config = require('./config');
 
-const proxy = require("http-proxy-middleware");
+const proxy = require('http-proxy-middleware');
 
 var options = {
-  target: "http://0.0.0.0/api",
+  target: 'http://vote.baleina.cn/',
   secure: false,
   changeOrigin: true,
   ws: true,
   ignorePath: false,
   pathRewrite: {
-    "^/api": ""
+    // '^/api': ''
   }
 };
 
@@ -25,7 +25,7 @@ var webProxy = proxy(options);
 function startDevServer() {
   const app = express();
   /*=============webpack start==============*/
-  const devConfig = getConfig("dev");
+  const devConfig = getConfig('dev');
   const compiler = webpack(devConfig);
   app.use(
     devMiddleware(compiler, {
@@ -34,10 +34,10 @@ function startDevServer() {
     })
   );
   app.use(hotMiddleware(compiler));
-  app.use("/api/*", webProxy);
+  app.use('/api/*', webProxy);
   /*=============webpack end==============*/
 
-  app.listen(config.port, err => {
+  app.listen(config.port, (err) => {
     if (err) {
       console.error(err);
     }

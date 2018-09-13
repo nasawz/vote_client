@@ -118,16 +118,6 @@ module.exports = (type) => {
         template: './src/templates/index.ejs',
         filename: 'index.html'
       }),
-      // isDist &&
-      //   new OptimizeCSSAssetsPlugin({
-      //     // cssProcessorOptions: {
-      //     //   parser: require('postcss-safe-parser'),
-      //     //   discardComments: {
-      //     //     removeAll: true
-      //     //   }
-      //     // }
-      //   }),
-      // isDist &&
       new MiniCssExtractPlugin({
         filename: `bundle/${pkgJson.version}/[name].css`,
         chunkFilename: `bundle/${pkgJson.version}/[name].[contenthash:12].css`
@@ -136,11 +126,15 @@ module.exports = (type) => {
         {
           from: config.webpack.path.src + '/lib/',
           to: 'lib/'
-        }
+        },
         // {
-        //   from: config.webpack.path.src + '/favicon.ico',
-        //   to: './'
-        // }
+        //   from: config.webpack.path.src + '/vendors/',
+        //   to: 'vendors/'
+        // },
+        {
+          from: config.webpack.path.src + '/assets/',
+          to: 'assets/'
+        }
       ]),
       new HtmlWebpackIncludeAssetsPlugin({
         assets: ['lib/react.production.min.js', 'lib/react-dom.production.min.js'],
