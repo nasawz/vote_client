@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-export interface MeProps {}
+export interface MeProps { }
 
 class Me extends React.Component<MeProps, any> {
   public render() {
@@ -38,10 +38,8 @@ class Me extends React.Component<MeProps, any> {
               className="MySignUp__subcontent"
               style={{ backgroundColor: 'rgb(57, 150, 246)', color: 'rgb(255, 255, 255)' }}
             >
-              返回投票
+              删除作品
             </div>
-          </div>
-          <div className="MySignUp__bottom-wrap" style={{ bottom: '2.960001rem' }}>
             <div
               className="MySignUp__subcontent"
               style={{ backgroundColor: 'rgb(57, 150, 246)', color: 'rgb(255, 255, 255)' }}
