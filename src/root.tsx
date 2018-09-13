@@ -9,14 +9,23 @@ export interface RootProps {
   user;
   getActivityData;
   getUserAsync;
+  setCategory;
+  getMyVoteItemAsync;
 }
 
 class Root extends React.Component<RootProps, any> {
-  componentWillMount() {
+  async componentWillMount() {
     let { pathname } = window.location;
+    let user = await this.props.getUserAsync();
+    if (!user) {
+      // TODO go login
+    }
     let activityId = pathname.replace(/\//g, '');
-    this.props.getActivityData(activityId);
-    this.props.getUserAsync();
+    let { categorys } = await this.props.getActivityData(activityId);
+    if (categorys && categorys.length > 0) {
+      this.props.setCategory(categorys[0]);
+    }
+    this.props.getMyVoteItemAsync(activityId);
   }
   public render() {
     let { activity, user } = this.props;
@@ -40,9 +49,15 @@ const mapState2Props = (state) => {
   };
 };
 
-const mapDispatch2Props = ({ activity: { getDataAsync }, user: { getUserAsync } }) => ({
+const mapDispatch2Props = ({
+  activity: { getDataAsync },
+  user: { getUserAsync },
+  vote: { setCategory, getMyVoteItemAsync }
+}) => ({
   getActivityData: getDataAsync,
-  getUserAsync: getUserAsync
+  getUserAsync: getUserAsync,
+  setCategory: setCategory,
+  getMyVoteItemAsync: getMyVoteItemAsync
 });
 
 export default connect(

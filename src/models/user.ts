@@ -1,4 +1,5 @@
 import { touch } from '../api';
+
 export const user = {
   state: {},
   reducers: {
@@ -8,13 +9,14 @@ export const user = {
   },
   effects: (dispatch) => ({
     async getUserAsync(activityId, rootState) {
-      touch()
-        .then((res) => {
-          dispatch.user.setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      try {
+        let res = await touch();
+        let user = res.data;
+        dispatch.user.setData(user);
+        return user;
+      } catch {
+        return null;
+      }
     }
   })
 };
