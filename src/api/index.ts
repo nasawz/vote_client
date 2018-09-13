@@ -67,7 +67,7 @@ export const getVoteItems = (
 export const getVoteItem = (id) => {
   const VoteItem = Parse.Object.extend('vote_item');
   const query = new Parse.Query(VoteItem);
-  query.equalTo('id', id);
+  query.equalTo('objectId', id);
   return query.first();
 };
 
