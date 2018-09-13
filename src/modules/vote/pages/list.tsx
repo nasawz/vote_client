@@ -13,10 +13,31 @@ export interface ListProps {
   history?;
 }
 class List extends React.Component<ListProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: ''
+    };
+  }
   goOpus() {
     this.props.history.push(`/vote/opus`);
   }
+  //投票
+  vote(id) {
+    console.log('id', id);
+  }
+  clickHandler(category) {
+    this.setState(
+      {
+        category
+      },
+      () => {
+        // 获取列表数据
+      }
+    );
+  }
   public render() {
+    let { category } = this.state;
     let { activity, children, history } = this.props;
     let opus_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
     let vote_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
@@ -41,7 +62,11 @@ class List extends React.Component<ListProps, any> {
                 报名
               </button>
             </CountDown>
-            <Category categories={activity.categorys} />
+            <Category
+              activeKey={category ? category : activity.categorys[0]}
+              categories={activity.categorys}
+              clickHandler={this.clickHandler.bind(this)}
+            />
             <RankBtn
               hander_rank_btn={() => {
                 history.push(`/vote/rank`);
@@ -57,8 +82,26 @@ class List extends React.Component<ListProps, any> {
                 position: 'relative'
               }}
             >
-              <Card />
-              <Card />
+              <Card
+                sendVote={this.vote}
+                opus={{
+                  id: 1,
+                  name: 'aaa',
+                  desc: 'aaaaaaaa',
+                  rank: 1,
+                  count: 15
+                }}
+              />
+              <Card
+                sendVote={this.vote}
+                opus={{
+                  id: 2,
+                  name: 'bbbb',
+                  desc: 'bbbbbbbb',
+                  rank: 2,
+                  count: 8
+                }}
+              />
             </div>
           </div>
         </div>

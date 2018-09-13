@@ -1,28 +1,55 @@
 import * as React from 'react';
+import classnames from 'classnames'
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 import Parse from '../../../api/parse';
-export interface OpusProps {}
+export interface OpusProps { }
 
 class Opus extends React.Component<OpusProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uploading: false,
+      imgUrl: ''
+    };
+  }
   onchange(e) {
     /**
      * 上传文件的例子
      */
+    this.setState({
+      uploading: true
+    })
     let file = e.target.files[0];
     let name = file.name;
     let parseFile = new Parse.File(name, file);
     parseFile.save().then(
       (res) => {
         console.log(res);
+        this.setState({
+          uploading: false,
+          imgUrl: res._url
+        })
       },
       (err) => {
         console.log(err);
+        this.setState({
+          uploading: false
+        })
       }
     );
   }
-
+  delImg() {
+    this.setState({
+      imgUrl: ''
+    })
+  }
   public render() {
+    let { uploading, imgUrl } = this.state
+    let cls = {
+      'PubImgUpload__add-img': true,
+      'disabled': imgUrl ? true : false
+    }
     return (
       <div>
         <ul className="Pub__panel">
@@ -45,74 +72,62 @@ class Opus extends React.Component<OpusProps, any> {
           <div className="Pub__pub-img-upload">
             <div className="PubImgUpload__avatars-wrap">
               <div className="PubImgUpload__avatar-content">
-                <div className="PubImgUpload__add-img">
+                <div className={classnames(cls)}>
                   <div className="PubImgUpload__camera-wrap">
                     <i className="k-i-camera PubImgUpload__camera" />
                     <p className="PubImgUpload__pic-txt">上传图片</p>
-                    <p className="PubImgUpload__pic-txt">(最多6张)</p>
+                    <p className="PubImgUpload__pic-txt">(最多1张)</p>
                   </div>
+                  {!imgUrl && <input
+                    type="file"
+                    name="file"
+                    id=""
+                    accept="image/gif,image/jpeg,image/jpg,image/png"
+                    className="PubImgUpload__input"
+                    onChange={this.onchange.bind(this)}
+                  />}
                 </div>
               </div>
-              <div className="PubImgUpload__avatar-content">
+              {imgUrl && <div className="PubImgUpload__avatar-content">
                 <img
-                  src="https://pic.kuaizhan.com/g3/59/9c/4692-f3a2-4288-95a0-7d49307be87226/imageView/v1/thumbnail/320x320"
+                  src={imgUrl}
                   className="PubImgUpload__avatar"
                 />
-                <div className="PubImgUpload__close-icon" />
-              </div>
-              <div className="PubImgUpload__loading-wrap">
+                <div className="PubImgUpload__close-icon" onClick={this.delImg.bind(this)} />
+              </div>}
+              {uploading && <div className="PubImgUpload__loading-wrap">
                 <div className="PubImgUpload__loading" />
-              </div>
+              </div>}
             </div>
-
-            <input
-              type="file"
-              name="file"
-              id=""
-              accept="image/gif,image/jpeg,image/jpg,image/png"
-              style={{ display: 'none' }}
-              onChange={this.onchange.bind(this)}
-            />
           </div>
         </ul>
         <ul className="Pub__panel">
           <div>
             <span className="PubCustomSettings__label">其他信息：</span>
             <li>
-              <div className="PubCustomSettings__single-select-wrap">
-                <span className="PubCustomSettings__single-select-label">请选择性别，选填</span>
-                <span className="PubCustomSettings__right-icon PubCustomSettings__single-select-val" />
-                <span className="PubCustomSettings__single-select-val" />
-              </div>
-              <div>
-                <div className="RadioGroup__content" style={{ display: 'none' }}>
-                  <li className="RadioGroup__item-wrap">
-                    <span className="RadioGroup__label">男</span>
-                    <span className="RadioGroup__radio" />
-                  </li>
-                  <li className="RadioGroup__item-wrap">
-                    <span className="RadioGroup__label">女</span>
-                    <span className="RadioGroup__radio RadioGroup__selected" />
-                  </li>
-                </div>
-                <div className="RadioGroup__wrap" style={{ display: 'none' }} />
-              </div>
-            </li>
-            <li>
               <div className="InputField__wrap">
                 <input required className="InputField__input" />
                 <span className="InputField__highlight" />
                 <span className="InputField__bar" />
-                <label className="InputField__label">请输入年龄，选填</label>
+                <label className="InputField__label">请输入真实姓名，选填</label>
                 <span className="InputField__num">0/100</span>
               </div>
               <span className="PubCustomSettings__txt-len">0 / 100</span>
             </li>
             <li>
               <div className="InputField__wrap">
-                <textarea required className="InputField__input InputField__textarea" />
+                <input required className="InputField__input" />
                 <span className="InputField__highlight" /> <span className="InputField__bar" />
-                <label className="InputField__label">请输入备注，选填</label>
+                <label className="InputField__label">请输入手机号，选填</label>
+                <span className="InputField__num">0/1000</span>
+              </div>
+              <span className="PubCustomSettings__txt-len">0 / 1000</span>
+            </li>
+            <li>
+              <div className="InputField__wrap">
+                <input required className="InputField__input" />
+                <span className="InputField__highlight" /> <span className="InputField__bar" />
+                <label className="InputField__label">请输入邮箱地址，选填</label>
                 <span className="InputField__num">0/1000</span>
               </div>
               <span className="PubCustomSettings__txt-len">0 / 1000</span>
