@@ -2,10 +2,31 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 // import Auth from '../../../components/auth';
 // import Paper from '../../../components/paper';
-export interface RankProps {}
+import Category from '../../../components/Category';
+export interface RankProps {
+  activity: any
+}
 
 class Rank extends React.Component<RankProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: ''
+    };
+  }
+  clickHandler(category) {
+    this.setState(
+      {
+        category
+      },
+      () => {
+        // 获取列表数据
+      }
+    );
+  }
   public render() {
+    let { category } = this.state;
+    let { activity } = this.props;
     return (
       <div>
         <div className="Charts__wrap">
@@ -31,7 +52,12 @@ class Rank extends React.Component<RankProps, any> {
               </div>
             </div>
             <div className="Charts__text">
-              <p className="Charts__name">新建投票活动</p>
+              {/*<p className="Charts__name">新建投票活动</p>*/}
+              <Category
+                activeKey={category ? category : activity.categorys[0]}
+                categories={activity.categorys}
+                clickHandler={this.clickHandler.bind(this)}
+              />
               <div className="Charts__list">
                 <span>名次</span> <span className="Charts__list-name">名称</span>
                 <span className="Charts__list-num">票数</span>
@@ -96,7 +122,9 @@ class Rank extends React.Component<RankProps, any> {
 }
 
 const mapState2Props = (state) => {
-  return {};
+  return {
+    activity: state.activity
+  };
 };
 
 export default connect(mapState2Props)(Rank);
