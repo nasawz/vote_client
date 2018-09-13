@@ -8,9 +8,10 @@ class List extends React.Component<ListProps, any> {
   public render() {
     return (
       <div>
-        <Paper>
+        demo
+        {/* <Paper>
           <Auth />
-        </Paper>
+        </Paper> */}
       </div>
     );
   }

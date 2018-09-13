@@ -34,8 +34,38 @@ function startDevServer() {
     })
   );
   app.use(hotMiddleware(compiler));
-  app.use('/api/*', webProxy);
   /*=============webpack end==============*/
+  /*=============proxy start==============*/
+  (() => {
+    const proxy_options = {
+      target: 'http://vote.baleina.cn/',
+      secure: false,
+      changeOrigin: true,
+      ws: true,
+      ignorePath: false,
+      pathRewrite: {
+        // '^/api': ''
+      }
+    };
+    const webProxy = proxy(proxy_options);
+    app.use('/api/*', webProxy);
+  })();
+  // ---------------- //
+  (() => {
+    const proxy_options = {
+      target: `http://localhost:${config.port}/`,
+      secure: false,
+      changeOrigin: true,
+      ws: true,
+      ignorePath: false,
+      pathRewrite: {
+        '^/VmAbYNivv5': ''
+      }
+    };
+    const webProxy = proxy(proxy_options);
+    app.use('/VmAbYNivv5/*', webProxy);
+  })();
+  /*=============proxy end================*/
 
   app.listen(config.port, (err) => {
     if (err) {
