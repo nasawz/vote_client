@@ -10,6 +10,7 @@ export interface RootProps {
   getActivityData;
   getUserAsync;
   setCategory;
+  getMyVoteItemAsync;
 }
 
 class Root extends React.Component<RootProps, any> {
@@ -24,6 +25,7 @@ class Root extends React.Component<RootProps, any> {
     if (categorys && categorys.length > 0) {
       this.props.setCategory(categorys[0]);
     }
+    this.props.getMyVoteItemAsync(activityId);
   }
   public render() {
     let { activity, user } = this.props;
@@ -50,11 +52,12 @@ const mapState2Props = (state) => {
 const mapDispatch2Props = ({
   activity: { getDataAsync },
   user: { getUserAsync },
-  vote: { setCategory }
+  vote: { setCategory, getMyVoteItemAsync }
 }) => ({
   getActivityData: getDataAsync,
   getUserAsync: getUserAsync,
-  setCategory: setCategory
+  setCategory: setCategory,
+  getMyVoteItemAsync: getMyVoteItemAsync
 });
 
 export default connect(
