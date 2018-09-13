@@ -1,5 +1,7 @@
 import { getActivity } from '../api';
 
+declare let window;
+
 export const activity = {
   state: {
     title: 'vote',
@@ -15,13 +17,18 @@ export const activity = {
   },
   effects: (dispatch) => ({
     async getDataAsync(activityId, rootState) {
-      getActivity(activityId)
-        .then((res) => {
-          dispatch.activity.setData(res.toJSON());
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (window.activity) {
+        dispatch.activity.setData(window.activity.toJSON());
+      } else {
+        getActivity(activityId)
+          .then((res) => {
+            window.activity = res;
+            dispatch.activity.setData(res.toJSON());
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   })
 };
