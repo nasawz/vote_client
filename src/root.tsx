@@ -5,8 +5,10 @@ import * as DocumentTitle from 'react-document-title';
 
 import App from './app';
 export interface RootProps {
-  title;
+  activity;
+  user;
   getActivityData;
+  getUserAsync;
 }
 
 class Root extends React.Component<RootProps, any> {
@@ -14,11 +16,15 @@ class Root extends React.Component<RootProps, any> {
     let { pathname } = window.location;
     let activityId = pathname.replace(/\//g, '');
     this.props.getActivityData(activityId);
+    this.props.getUserAsync();
   }
   public render() {
-    let { title } = this.props;
+    let { activity, user } = this.props;
+    if (!user.objectId || !activity.objectId) {
+      return <div />;
+    }
     return (
-      <DocumentTitle title={title}>
+      <DocumentTitle title={activity.title}>
         <Router>
           <Route path="/" component={App} />
         </Router>
@@ -29,12 +35,14 @@ class Root extends React.Component<RootProps, any> {
 
 const mapState2Props = (state) => {
   return {
-    title: state.activity.title
+    activity: state.activity,
+    user: state.user
   };
 };
 
-const mapDispatch2Props = ({ activity: { getDataAsync } }) => ({
-  getActivityData: getDataAsync
+const mapDispatch2Props = ({ activity: { getDataAsync }, user: { getUserAsync } }) => ({
+  getActivityData: getDataAsync,
+  getUserAsync: getUserAsync
 });
 
 export default connect(

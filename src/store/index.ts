@@ -1,10 +1,13 @@
 import { init } from '@rematch/core';
-import { svModel } from '../models/svModel';
 import { activity } from '../models/activity';
+import { vote } from '../models/vote';
+import { user } from '../models/user';
 
 const store = init({
   models: {
-    activity
+    activity,
+    vote,
+    user
   }
 });
 

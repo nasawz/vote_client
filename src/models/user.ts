@@ -1,8 +1,5 @@
-import { getActivity } from '../api';
-
-declare let window;
-
-export const activity = {
+import { touch } from '../api';
+export const user = {
   state: {},
   reducers: {
     setData(state, payload) {
@@ -10,10 +7,10 @@ export const activity = {
     }
   },
   effects: (dispatch) => ({
-    async getDataAsync(activityId, rootState) {
-      getActivity(activityId)
+    async getUserAsync(activityId, rootState) {
+      touch()
         .then((res) => {
-          dispatch.activity.setData(res.toJSON());
+          dispatch.user.setData(res.data);
         })
         .catch((err) => {
           console.log(err);
