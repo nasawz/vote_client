@@ -3,19 +3,12 @@ import axios from 'axios';
 declare let window;
 
 export const getActivity = (activityId) => {
-  //   var pipeline = [{ group: { objectId: null, total: { $sum: '$score' } } }];
-  //   var query1 = new Parse.Query('vote_item');
-  //   query1
-  //     .aggregate(pipeline)
-  //     .then(function(results) {
-  //       console.log(results);
-  //       console.log('---------');
-  //       // results contains sum of score field and stores it in results[0].total
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //       console.log('---------');
-  //       // There was an error.
+  // var GameScore = Parse.Object.extend("GameScore");
+  // var query = new Parse.Query(GameScore);
+  // // Previously retrieved highScore for Michael Yabuti
+  // query.greaterThan("score", highScore);
+  // query.find().then(function(results) {
+  //   // Retrieved scores successfully
   // });
 
   const Activity = Parse.Object.extend('activity');
@@ -76,4 +69,8 @@ export const getVoteItem = (id) => {
   const query = new Parse.Query(VoteItem);
   query.equalTo('id', id);
   return query.first();
+};
+
+export const touch = () => {
+  return axios.get(`/api/user/touch`);
 };
