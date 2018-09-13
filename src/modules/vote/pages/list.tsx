@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-export interface ListProps {}
 import Card from '../../../components/Card';
 import Banner from '../../../components/Banner';
 import ActivityTitle from '../../../components/ActivityTitle';
@@ -9,18 +8,21 @@ import ActivityIntro from '../../../components/ActivityIntro';
 import CountDown from '../../../components/CountDown';
 import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
-
+export interface ListProps {
+  activity: any;
+}
 class List extends React.Component<ListProps, any> {
   public render() {
-    let { children } = this.props;
+    let { activity, children } = this.props;
     let opus_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
     let vote_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
+    if (!activity) return <div />;
     return (
       <div className="App__pcWrap">
         <div className="List__whole">
           <div className="Header__panel">
-            <Banner img="http://pic.616pic.com/bg_w1180/00/24/63/0p2bIHGzTW.jpg!/fw/1120" />
-            <ActivityTitle title="投票活动" />
+            <Banner img={activity.kv} />
+            <ActivityTitle title={activity.title} />
             <ActivityTime opus_time={opus_time} vote_time={vote_time} />
             <ActivityIntro />
             <CountDown time="6天 22:48:19">
@@ -34,7 +36,7 @@ class List extends React.Component<ListProps, any> {
                 报名
               </button>
             </CountDown>
-            <Category categories={[]} />
+            <Category categories={activity.categorys} />
             <RankBtn
               hander_rank_btn={() => {
                 console.log('去榜单');
@@ -63,7 +65,9 @@ class List extends React.Component<ListProps, any> {
 }
 
 const mapState2Props = (state) => {
-  return {};
+  return {
+    activity: state.activity
+  };
 };
 
 export default connect(mapState2Props)(List);
