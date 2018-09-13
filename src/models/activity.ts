@@ -23,6 +23,7 @@ export const activity = {
         getActivity(activityId)
           .then((res) => {
             window.activity = res;
+            console.log(res);
             dispatch.activity.setData(res.toJSON());
           })
           .catch((err) => {

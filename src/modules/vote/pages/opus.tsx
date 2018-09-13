@@ -1,10 +1,27 @@
 import * as React from 'react';
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
-
+import Parse from '../../../api/parse';
 export interface OpusProps {}
 
 class Opus extends React.Component<OpusProps, any> {
+  onchange(e) {
+    /**
+     * 上传文件的例子
+     */
+    let file = e.target.files[0];
+    let name = file.name;
+    let parseFile = new Parse.File(name, file);
+    parseFile.save().then(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   public render() {
     return (
       <div>
@@ -47,11 +64,14 @@ class Opus extends React.Component<OpusProps, any> {
                 <div className="PubImgUpload__loading" />
               </div>
             </div>
+
             <input
               type="file"
               name="file"
+              id=""
               accept="image/gif,image/jpeg,image/jpg,image/png"
               style={{ display: 'none' }}
+              onChange={this.onchange.bind(this)}
             />
           </div>
         </ul>
