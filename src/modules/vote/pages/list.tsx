@@ -16,6 +16,10 @@ class List extends React.Component<ListProps, any> {
   goOpus() {
     this.props.history.push(`/vote/opus`);
   }
+  //投票
+  vote(id) {
+    console.log('id', id);
+  }
   public render() {
     let { activity, children, history } = this.props;
     let opus_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
@@ -57,8 +61,26 @@ class List extends React.Component<ListProps, any> {
                 position: 'relative'
               }}
             >
-              <Card />
-              <Card />
+              <Card
+                sendVote={this.vote}
+                opus={{
+                  id: 1,
+                  name: 'aaa',
+                  desc: 'aaaaaaaa',
+                  rank: 1,
+                  count: 15
+                }}
+              />
+              <Card
+                sendVote={this.vote}
+                opus={{
+                  id: 2,
+                  name: 'bbbb',
+                  desc: 'bbbbbbbb',
+                  rank: 2,
+                  count: 8
+                }}
+              />
             </div>
           </div>
         </div>
