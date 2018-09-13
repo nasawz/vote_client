@@ -11,13 +11,9 @@ export const activity = {
   },
   effects: (dispatch) => ({
     async getDataAsync(activityId, rootState) {
-      getActivity(activityId)
-        .then((res) => {
-          dispatch.activity.setData(res.toJSON());
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let activity = await getActivity(activityId);
+      dispatch.activity.setData(activity.toJSON());
+      return activity.toJSON();
     }
   })
 };
