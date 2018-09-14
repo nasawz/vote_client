@@ -57,18 +57,22 @@ class Opus extends React.Component<OpusProps, any> {
     return (
       <div>
         <ul className="Pub__panel">
-          <span className="Pub__title">{title}</span>
+          <span className="Pub__title">{title} (报名)</span>
         </ul>
         <ul className="Pub__panel Pub__name-wrap">
           <label className="Pub__name Pub__label">名称：</label>
           <div className="Pub__auto-fill-right">
-            <input placeholder="请输入名称，必填" className="Pub__name-input" />
+            <input placeholder="请输入名称，必填" maxLength={100} className="Pub__name-input" />
             <span className="Pub__txt-len">0/100</span>
           </div>
         </ul>
         <ul className="Pub__panel">
           <span className="Pub__label">详细介绍：</span>
-          <textarea placeholder="请输入详细介绍，选填" className="Pub__desc-input" />
+          <textarea
+            placeholder="请输入详细介绍，选填"
+            className="Pub__desc-input"
+            maxLength={1000}
+          />
           <span className="Pub__txt-len">0/1000</span>
         </ul>
         <ul className="Pub__panel Pub__pic-wrap">
@@ -112,32 +116,49 @@ class Opus extends React.Component<OpusProps, any> {
           <div>
             <span className="PubCustomSettings__label">其他信息：</span>
             <li>
+              <div className="PubCustomSettings__single-select-wrap">
+                <span className="PubCustomSettings__single-select-label">请选择性别，选填</span>
+                <span className="PubCustomSettings__right-icon PubCustomSettings__single-select-val" />
+                <span className="PubCustomSettings__single-select-val" />
+              </div>
+              <div>
+                <div className="RadioGroup__content">
+                  <li className="RadioGroup__item-wrap">
+                    <span className="RadioGroup__label">男</span>
+                    <span className="RadioGroup__radio" />
+                  </li>
+                  <li className="RadioGroup__item-wrap">
+                    <span className="RadioGroup__label">女</span>
+                    <span className="RadioGroup__radio RadioGroup__selected" />
+                  </li>
+                </div>
+                <div className="RadioGroup__wrap" />
+              </div>
+            </li>
+            <li>
               <div className="InputField__wrap">
-                <input required className="InputField__input" />
+                <input required className="InputField__input" maxLength={100} />
                 <span className="InputField__highlight" />
                 <span className="InputField__bar" />
                 <label className="InputField__label">请输入真实姓名，选填</label>
                 <span className="InputField__num">0/100</span>
               </div>
-              <span className="PubCustomSettings__txt-len">0 / 100</span>
             </li>
             <li>
               <div className="InputField__wrap">
-                <input required className="InputField__input" />
+                <input required className="InputField__input" maxLength={100} />
                 <span className="InputField__highlight" /> <span className="InputField__bar" />
                 <label className="InputField__label">请输入手机号，选填</label>
-                <span className="InputField__num">0/1000</span>
+                <span className="InputField__num">0/100</span>
               </div>
-              <span className="PubCustomSettings__txt-len">0 / 1000</span>
             </li>
             <li>
               <div className="InputField__wrap">
-                <input required className="InputField__input" />
+                <input required className="InputField__input" maxLength={100} />
                 <span className="InputField__highlight" /> <span className="InputField__bar" />
                 <label className="InputField__label">请输入邮箱地址，选填</label>
-                <span className="InputField__num">0/1000</span>
+                <span className="InputField__num">0/100</span>
               </div>
-              <span className="PubCustomSettings__txt-len">0 / 1000</span>
             </li>
           </div>
         </ul>
