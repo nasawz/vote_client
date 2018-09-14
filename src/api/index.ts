@@ -3,14 +3,6 @@ import axios from 'axios';
 declare let window;
 
 export const getActivity = (activityId) => {
-  // var GameScore = Parse.Object.extend("GameScore");
-  // var query = new Parse.Query(GameScore);
-  // // Previously retrieved highScore for Michael Yabuti
-  // query.greaterThan("score", highScore);
-  // query.find().then(function(results) {
-  //   // Retrieved scores successfully
-  // });
-
   const Activity = Parse.Object.extend('activity');
   const query = new Parse.Query(Activity);
   query.equalTo('objectId', activityId);
@@ -30,7 +22,7 @@ export const addVote = (activityId, id) => {
 };
 
 export const delVoteItem = (activityId, id) => {
-  return axios.post(`/api/vote/delVoteItem/${activityId}/${id}`);
+  return axios.delete(`/api/vote/delVoteItem/${activityId}/${id}`);
 };
 
 export interface IOrder {
@@ -64,11 +56,12 @@ export const getVoteItems = (
   return query.find();
 };
 
-export const getVoteItem = (id) => {
-  const VoteItem = Parse.Object.extend('vote_item');
-  const query = new Parse.Query(VoteItem);
-  query.equalTo('objectId', id);
-  return query.first();
+export const getVoteItem = (activityId, id) => {
+  return axios.get(`/api/vote/voteItem/${activityId}/${id}`);
+  // const VoteItem = Parse.Object.extend('vote_item');
+  // const query = new Parse.Query(VoteItem);
+  // query.equalTo('objectId', id);
+  // return query.first();
 };
 
 export const touch = () => {

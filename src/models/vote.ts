@@ -32,7 +32,10 @@ export const vote = {
     vote_item: null,
     curr_category: '',
     vote_items: [],
-    my_vote_item: null
+    vote_items_skip: 0,
+    my_vote_item: null,
+    rank_list: [],
+    rank_list_skip: 0
   },
   reducers: {
     setCategory(state, payload) {
@@ -50,8 +53,11 @@ export const vote = {
       });
       return Object.assign({}, state, { vote_items: _.concat(state.vote_items, items) });
     },
+    setVoteItemsSkip(state, payload) {
+      return Object.assign({}, state, { vote_items_skip: payload });
+    },
     clearVoteItems(state, payload) {
-      return Object.assign({}, state, { vote_items: [] });
+      return Object.assign({}, state, { vote_items: [], vote_items_skip: 0 });
     },
     setMyVoteItem(state, payload) {
       return Object.assign({}, state, { my_vote_item: payload });
@@ -73,6 +79,15 @@ export const vote = {
         vote_item: state.vote_item,
         my_vote_item: state.my_vote_item
       });
+    },
+    setRankList(state, payload) {
+      return Object.assign({}, state, { rank_list: _.concat(state.rank_list, payload) });
+    },
+    setRankListSkip(state, payload) {
+      return Object.assign({}, state, { rank_list_skip: payload });
+    },
+    clearRankList(state, payload) {
+      return Object.assign({}, state, { rank_list: [], rank_list_skip: 0 });
     }
   },
   effects: (dispatch) => ({
@@ -81,10 +96,10 @@ export const vote = {
      * @param id
      * @param rootState
      */
-    async getVoteItemAsync(id, rootState) {
+    async getVoteItemAsync(params: IQueryItemParams, rootState) {
       try {
-        let res = getVoteItem(id);
-        let item = res.toJSON();
+        let res = await getVoteItem(params.activityId, params.id);
+        let item = res.data;
         dispatch.vote.setVoteItem(item);
         return item;
       } catch (error) {
