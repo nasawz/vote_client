@@ -169,7 +169,7 @@ export const vote = {
         dispatch.vote.incrementScore(params.id);
         return vote;
       } catch (error) {
-        return null;
+        throw new Error(error.response.data.message);
       }
     },
     /**
@@ -192,7 +192,7 @@ export const vote = {
      */
     async getRankListAsync(params: IQueryItemsParams, rootState) {
       try {
-        let res = await getRankList(params.activityId, params.limit, params.skip, params.order);
+        let res = await getRankList(params.activityId, params.limit, params.skip, params.category);
         let items = res.data;
         dispatch.vote.setRankList(items);
         return items;
