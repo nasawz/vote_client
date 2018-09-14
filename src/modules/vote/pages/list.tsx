@@ -180,7 +180,6 @@ class List extends React.Component<ListProps, any> {
 }
 
 const mapState2Props = (state) => {
-  console.log(state);
   return {
     activity: state.activity,
     user: state.user,

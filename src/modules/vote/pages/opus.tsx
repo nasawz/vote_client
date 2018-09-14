@@ -3,12 +3,15 @@ import classnames from 'classnames';
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 import Parse from '../../../api/parse';
-import { Picker, List } from 'antd-mobile';
+import { Picker, List, Toast } from 'antd-mobile';
 import _ from 'lodash';
 export interface OpusProps {
   title;
   primary_color;
   categorys;
+  history;
+  addVoteItem;
+  activityId;
 }
 
 class Opus extends React.Component<OpusProps, any> {
@@ -17,7 +20,13 @@ class Opus extends React.Component<OpusProps, any> {
     this.state = {
       uploading: false,
       imgUrl: '',
-      category: null
+      category: null,
+      title: '',
+      desc: '',
+      showPubConfirmModal: false,
+      showPubRemindModal: false,
+      loading: false,
+      pubResult: ''
     };
   }
   onchange(e) {
@@ -46,14 +55,88 @@ class Opus extends React.Component<OpusProps, any> {
       }
     );
   }
+  onTitleChange(e) {
+    this.setState({
+      title: e.target.value
+    });
+  }
+  onDescChange(e) {
+    this.setState({
+      desc: e.target.value
+    });
+  }
   delImg() {
     this.setState({
       imgUrl: ''
     });
   }
+  onSubmit() {
+    let { title, desc, category, imgUrl } = this.state;
+    if (title == '') {
+      Toast.info('请输入名称', 1);
+      return;
+    }
+    if (!category) {
+      Toast.info('请选择类别', 1);
+      return;
+    }
+    if (imgUrl == '') {
+      Toast.info('请上传图片', 1);
+      return;
+    }
+
+    this.setState({ showPubConfirmModal: true });
+  }
+  closeModal() {
+    let { loading } = this.state;
+    if (!loading) {
+      this.setState({ showPubConfirmModal: false, showPubRemindModal: false });
+    }
+  }
+  openPubRemindModal() {
+    this.setState({ showPubRemindModal: true });
+  }
+  goBack() {
+    this.props.history.goBack();
+  }
+  async onConfirm() {
+    let { title, desc, category, imgUrl, loading } = this.state;
+    let { activityId } = this.props;
+    if (!loading) {
+      this.setState({ loading: true });
+      try {
+        await this.props.addVoteItem({
+          activityId,
+          data: {
+            title,
+            desc,
+            category,
+            pic: imgUrl
+          }
+        });
+        this.setState({ showPubConfirmModal: false, pubResult: 'succ' });
+        this.openPubRemindModal();
+      } catch (error) {
+        this.setState({ showPubConfirmModal: false, pubResult: 'fail' });
+        this.openPubRemindModal();
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
+  }
   public render() {
-    let { uploading, imgUrl } = this.state;
-    let { title, primary_color, categorys } = this.props;
+    let {
+      uploading,
+      imgUrl,
+      category,
+      title,
+      desc,
+      showPubConfirmModal,
+      showPubRemindModal,
+      loading,
+      pubResult
+    } = this.state;
+    let { primary_color, categorys } = this.props;
     let cls = {
       'PubImgUpload__add-img': true,
       disabled: imgUrl ? true : false
@@ -61,13 +144,22 @@ class Opus extends React.Component<OpusProps, any> {
     return (
       <div>
         <ul className="Pub__panel">
-          <span className="Pub__title">{title} (报名)</span>
+          <span className="Pub__title">{this.props.title} (报名)</span>
         </ul>
         <ul className="Pub__panel Pub__name-wrap">
           <label className="Pub__name Pub__label">名称：</label>
           <div className="Pub__auto-fill-right">
-            <input placeholder="请输入名称，必填" maxLength={100} className="Pub__name-input" />
-            <span className="Pub__txt-len">0/100</span>
+            <input
+              placeholder="请输入名称，必填"
+              maxLength={100}
+              value={title}
+              onChange={this.onTitleChange.bind(this)}
+              className="Pub__name-input"
+            />
+            <span className="Pub__txt-len">
+              {title.length}
+              /100
+            </span>
           </div>
         </ul>
         <ul className="Pub__panel Pub__category-wrap">
@@ -91,9 +183,14 @@ class Opus extends React.Component<OpusProps, any> {
           <textarea
             placeholder="请输入详细介绍，选填"
             className="Pub__desc-input"
+            value={desc}
+            onChange={this.onDescChange.bind(this)}
             maxLength={1000}
           />
-          <span className="Pub__txt-len">0/1000</span>
+          <span className="Pub__txt-len">
+            {desc.length}
+            /1000
+          </span>
         </ul>
         <ul className="Pub__panel Pub__pic-wrap">
           <span className="Pub__label">图片：</span>
@@ -132,7 +229,7 @@ class Opus extends React.Component<OpusProps, any> {
             </div>
           </div>
         </ul>
-        <ul className="Pub__panel">
+        {/* <ul className="Pub__panel">
           <div>
             <span className="PubCustomSettings__label">其他信息：</span>
             <li />
@@ -162,7 +259,7 @@ class Opus extends React.Component<OpusProps, any> {
               </div>
             </li>
           </div>
-        </ul>
+        </ul> */}
         <ul className="Pub__pc-bottom">
           <button
             className="Pub__btn"
@@ -170,67 +267,89 @@ class Opus extends React.Component<OpusProps, any> {
               backgroundColor: primary_color,
               color: 'rgb(255, 255, 255)'
             }}
+            onClick={this.onSubmit.bind(this)}
           >
             立即提交
           </button>
         </ul>
         <div style={{ height: '200px' }} />
         <div>
-          <div className="PubConfirm__modal" style={{ display: 'none' }}>
+          <div
+            className="PubConfirm__modal"
+            style={{ display: showPubConfirmModal ? 'block' : 'none' }}
+          >
             <ul className="PubConfirm__title">
               <p className="PubConfirm__info">报名信息</p>
-              <div className="PubConfirm__close">
+              <div className="PubConfirm__close" onClick={this.closeModal.bind(this)}>
                 <span className="PubConfirm__add" /> <span className="PubConfirm__add2" />
               </div>
             </ul>
             <div className="PubConfirm__content">
               <ul className="PubConfirm__avatar-wrap">
-                <img
-                  src="https://pic.kuaizhan.com/g3/b6/e4/6102-cb9d-4712-9e8d-1bbf6ac1f99d55"
-                  className="PubConfirm__avatar"
-                />
+                <img src={imgUrl != '' ? `${imgUrl}-75` : ''} className="PubConfirm__avatar" />
                 <div className="PubConfirm__avatar-num">
-                  <i className="k-i-image PubConfirm__image-font" /> 3
+                  <i className="k-i-image PubConfirm__image-font" />
                 </div>
               </ul>
-              <ul className="PubConfirm__label">名称：sfdasdf</ul>
-              <ul className="PubConfirm__label">详细介绍： sfdasdfasdfasd</ul>
-              <ul className="PubConfirm__label">性别：</ul>
+              <ul className="PubConfirm__label">
+                名称：
+                {title}
+              </ul>
+              <ul className="PubConfirm__label">
+                类别：
+                {category}
+              </ul>
+              <ul className="PubConfirm__label">详细介绍： {desc}</ul>
+              {/* <ul className="PubConfirm__label">性别：</ul>
               <ul className="PubConfirm__label">年龄：</ul>
-              <ul className="PubConfirm__label">备注：</ul>
+              <ul className="PubConfirm__label">备注：</ul> */}
             </div>
             <ul className="PubConfirm__tip">请确认报名信息，提交后不能更改</ul>
             <button
               className="PubConfirm__btn"
-              style={{ backgroundColor: 'rgb(57, 150, 246)', color: 'rgb(255, 255, 255)' }}
+              style={{ backgroundColor: primary_color, color: 'rgb(255, 255, 255)' }}
+              onClick={this.onConfirm.bind(this)}
             >
-              <div className="PubConfirm__loading" style={{ display: 'none' }} /> <span>确认</span>
+              <div className="PubConfirm__loading" style={{ display: loading ? '' : 'none' }} />{' '}
+              <span>确认</span>
             </button>
           </div>
 
-          {/*
-            <div className="PubConfirm__remind-wrap">
+          <div
+            className="PubConfirm__remind-wrap"
+            style={{ display: showPubRemindModal ? 'block' : 'none' }}
+          >
             <div className="PubConfirm__content-wrap">
-              <div className="PubConfirm__close">
+              <div className="PubConfirm__close" onClick={this.closeModal.bind(this)}>
                 <span className="PubConfirm__add" /> <span className="PubConfirm__add2" />
               </div>
               <div className="PubConfirm__success-pic">
                 <img
-                  src="assets/images/join_succ.png"
+                  src={
+                    pubResult == 'succ'
+                      ? 'assets/images/join_succ.png'
+                      : 'assets/images/vote_fail.png'
+                  }
                   className="PubConfirm__success-image"
                 />
               </div>
-              <p className="PubConfirm__remind">报名信息已提交成功</p>
+              <p className="PubConfirm__remind">
+                {pubResult == 'succ' ? '报名信息已提交成功' : '报名信息提交失败'}
+              </p>
               <button
                 className="PubConfirm__back"
-                style={{ backgroundColor: 'rgb(57, 150, 246)', color: 'rgb(255, 255, 255)' }}
+                style={{ backgroundColor: primary_color, color: 'rgb(255, 255, 255)' }}
+                onClick={this.goBack.bind(this)}
               >
                 返回首页
               </button>
             </div>
           </div>
-          <div className="PubConfirm__backdrop" />
-          */}
+
+          <div
+            className="PubConfirm__backdrop"
+            style={{ display: showPubConfirmModal || showPubRemindModal ? 'block' : 'none' }}
+          />
         </div>
       </div>
     );
@@ -238,11 +357,20 @@ class Opus extends React.Component<OpusProps, any> {
 }
 
 const mapState2Props = (state) => {
+  console.log(state);
   return {
     title: state.activity.title,
+    activityId: state.activity.objectId,
     categorys: state.activity.categorys,
     primary_color: state.activity.primary_color
   };
 };
 
-export default connect(mapState2Props)(Opus);
+const mapDispatch2Props = ({ vote: { addVoteItemAsync } }) => ({
+  addVoteItem: addVoteItemAsync
+});
+
+export default connect(
+  mapState2Props,
+  mapDispatch2Props
+)(Opus);
