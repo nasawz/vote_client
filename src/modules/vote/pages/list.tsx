@@ -44,10 +44,10 @@ class List extends React.Component<ListProps, any> {
   }
   fmt() {}
   renderJoinBtn() {
-    let { join_rule, join_end, primary_color } = this.props.activity;
+    let { join_rule, join_end, join_start, primary_color } = this.props.activity;
     let { type } = this.props.user;
     let { my_vote_item } = this.props;
-    console.log(this.props.user);
+
     if (join_rule == 2) {
       // 企业用户才可参与
       if (type != '2') {
@@ -57,6 +57,19 @@ class List extends React.Component<ListProps, any> {
     let isEnd = false;
     if (new Date() > join_end) {
       isEnd = true;
+    }
+    if (new Date() < join_start) {
+      return (
+        <button
+          className="Header__apply-btn Header__no-click"
+          style={{
+            borderColor: 'rgb(251, 201, 77)',
+            color: 'rgb(251, 201, 77)'
+          }}
+        >
+          报名未开始
+        </button>
+      );
     }
     let hasJoin = my_vote_item != null ? true : false;
     if (hasJoin) {
@@ -108,7 +121,11 @@ class List extends React.Component<ListProps, any> {
               join_end={join_end}
             />
             <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
-            <CountDown date_end={activity.date_end} primary_color={activity.primary_color}>
+            <CountDown
+              join_start={activity.join_start}
+              date_end={activity.date_end}
+              primary_color={activity.primary_color}
+            >
               {this.renderJoinBtn()}
             </CountDown>
             <Category

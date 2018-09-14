@@ -4,14 +4,17 @@ export interface CountDownProps {
   children?: any;
   primary_color;
   date_end;
+  join_start;
 }
 
 export default class CountDown extends React.Component<CountDownProps, any> {
   timer;
+  timer_join;
   constructor(props) {
     super(props);
     this.state = {
-      time: ''
+      time: '',
+      timer_join: ''
     };
   }
   getLeftTime(date_end) {
@@ -30,18 +33,44 @@ export default class CountDown extends React.Component<CountDownProps, any> {
       return '活动已结束';
     }
   }
+
+  getNeedTime(join_start) {
+    let t = join_start - Date.now();
+    if (t > 0) {
+      let day = Math.floor(t / (24 * 3600 * 1000));
+      let leave1 = t % (24 * 3600 * 1000);
+      let hours = Math.floor(leave1 / (3600 * 1000));
+      let leave2 = leave1 % (3600 * 1000);
+      let minutes = Math.floor(leave2 / (60 * 1000));
+      let leave3 = leave2 % (60 * 1000);
+      let seconds = Math.round(leave3 / 1000);
+      return `${day}天 ${hours}:${minutes}:${seconds}`;
+    } else {
+      clearInterval(this.timer_join);
+      return '活动已开始';
+    }
+  }
+
   componentDidMount() {
-    let { date_end } = this.props;
+    let { date_end, join_start } = this.props;
+    if (Date.now() < join_start) {
+      this.timer_join = setInterval(() => {
+        this.setState({ timer_join: this.getNeedTime(join_start) });
+      }, 1000);
+    }
     this.timer = setInterval(() => {
       this.setState({ time: this.getLeftTime(date_end) });
     }, 1000);
   }
   componentWillUnmount() {
     clearInterval(this.timer);
+    clearInterval(this.timer_join);
   }
+
   public render() {
-    let { children, primary_color } = this.props;
-    let { time } = this.state;
+    let { children, primary_color, join_start } = this.props;
+    let { time, timer_join } = this.state;
+    let isStart = Date.now() > join_start;
     return (
       <ul className="Header__card Header__apply-wrap">
         <span className="Header__icon-style">
@@ -52,8 +81,8 @@ export default class CountDown extends React.Component<CountDownProps, any> {
             }}
           />
         </span>
-        <span className="Header__label-name">距离结束</span>
-        <span className="Header__count-down"> {time}</span>
+        <span className="Header__label-name">{isStart ? '距离结束' : '距离开始'}</span>
+        <span className="Header__count-down"> {isStart ? time : timer_join}</span>
         {children}
       </ul>
     );
