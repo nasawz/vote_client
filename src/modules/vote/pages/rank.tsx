@@ -6,13 +6,17 @@ import Category from '../../../components/Category';
 import RankItem from '../../../components/RankItem';
 export interface RankProps {
   activity: any;
+  getRankListAsync: any;
+  rank_list: any;
 }
 
 class Rank extends React.Component<RankProps, any> {
   constructor(props) {
     super(props);
+    let { activity } = this.props;
     this.state = {
-      activeTab: ''
+      category: activity.categorys[0],
+      page_num: 1
     };
   }
   clickHandler(category) {
@@ -22,12 +26,38 @@ class Rank extends React.Component<RankProps, any> {
       },
       () => {
         // 获取列表数据
+        console.log(this.state.category);
       }
     );
   }
+  getData() {
+    let { activity } = this.props;
+
+    let limit = 10;
+    let skip = limit * (this.state.page_num - 1);
+    let activityId = activity.objectId;
+    let category = this.state.category;
+    this.props.getRankListAsync({
+      limit,
+      skip,
+      activityId,
+      category
+    });
+  }
+  componentDidMount() {
+    this.getData();
+  }
+  renderItem() {
+    let { rank_list, activity } = this.props;
+    return rank_list.map((rank) => {
+      return <RankItem activity={activity} rank={rank} />;
+    });
+  }
+
   public render() {
     let { category } = this.state;
-    let { activity } = this.props;
+    let { activity, rank_list } = this.props;
+    console.log('rank_list', rank_list);
     return (
       <div>
         <div className="Charts__wrap">
@@ -62,38 +92,7 @@ class Rank extends React.Component<RankProps, any> {
                 <span className="Charts__list-num">票数</span>
               </div>
               <div className="Charts__wrap-bottom">
-                <ul className="Charts__model-ul">
-                  <RankItem
-                    activity={activity}
-                    rank={{
-                      num: 1
-                    }}
-                  />
-                  <RankItem
-                    activity={activity}
-                    rank={{
-                      num: 2
-                    }}
-                  />
-                  <RankItem
-                    activity={activity}
-                    rank={{
-                      num: 2
-                    }}
-                  />
-                  <RankItem
-                    activity={activity}
-                    rank={{
-                      num: 3
-                    }}
-                  />
-                  <RankItem
-                    activity={activity}
-                    rank={{
-                      num: 4
-                    }}
-                  />
-                </ul>
+                <ul className="Charts__model-ul">{this.renderItem()}</ul>
               </div>
             </div>
           </div>
@@ -105,8 +104,15 @@ class Rank extends React.Component<RankProps, any> {
 
 const mapState2Props = (state) => {
   return {
-    activity: state.activity
+    activity: state.activity,
+    rank_list: state.vote.rank_list
   };
 };
+const mapDispatch2Props = ({ vote: { getRankListAsync } }) => ({
+  getRankListAsync: getRankListAsync
+});
 
-export default connect(mapState2Props)(Rank);
+export default connect(
+  mapState2Props,
+  mapDispatch2Props
+)(Rank);

@@ -8,13 +8,13 @@ export interface RankBtnProps {
 export default class RankBtn extends React.Component<RankBtnProps, any> {
   renderRankNum() {
     let { activity, rank } = this.props;
-    if (rank.num == 1) {
+    if (rank.rank == 1) {
       return <img src="assets/images/rank_1.png" />;
     }
-    if (rank.num == 2) {
+    if (rank.rank == 2) {
       return <img src="assets/images/rank_2.png" />;
     }
-    if (rank.num == 3) {
+    if (rank.rank == 3) {
       return <img src="assets/images/rank_3.png" />;
     }
     return (
@@ -32,12 +32,13 @@ export default class RankBtn extends React.Component<RankBtnProps, any> {
     return (
       <li>
         {this.renderRankNum()}
-        <p className="Charts__model-name Charts__model-name1">aa</p>
+        <p className="Charts__model-name Charts__model-name1">{rank.title}</p>
         <p
           className="Charts__model-num Charts__model-num1"
           style={{ color: activity.primary_color }}
         >
-          2<span className="Charts__ticket-unit">票</span>
+          {rank.score}
+          <span className="Charts__ticket-unit">票</span>
         </p>
       </li>
     );
