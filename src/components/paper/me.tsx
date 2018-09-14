@@ -21,15 +21,9 @@ export default class Me extends React.Component<MeProps, any> {
               <div className="signUpInformation__signup-info">报名信息</div>
               <div className="signUpInformation__detail">
                 <div className="signUpInformation__info-pic">
-                  <img
-                    src="https://pic.kuaizhan.com/g3/b6/e4/6102-cb9d-4712-9e8d-1bbf6ac1f99d55"
-                    className="signUpInformation__pic"
-                  />
+                  <img src="" className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num">3</span>
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAflBMVEX///////////////////////////9MaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////97HwtyAAAAKXRSTlNgPiS6V7P9AMDsqynQARXyZvGZsbk3iw0CKAN8LeZtXWnfX2hbIFIdTyejEZ0AAAB4SURBVBjTfdHJDoJAEEXRYmooZ1FwFifQ+/8/6IIYSDXylmfRldyWWDHTWDQRs0QFSc2EETwGBw/3W1hZDIGZxd0SJt6bwSZf/Lk+nftYrEsPzwqnPt6qNLwAXDt84Z73tsbjhx/XJXJNi+8o6y2qR4NYHIw89B1fmZEXxD5HYPcAAAAASUVORK5CYII="
-                    className="signUpInformation__icon"
-                  />
+                  <img src="assets/images/pic.png" className="signUpInformation__icon" />
                 </div>
                 <div className="signUpInformation__information">
                   <p className="signUpInformation__name">名称: sfdasdf</p>
