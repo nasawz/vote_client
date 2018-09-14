@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 export interface CountDownProps {
-  time: any;
   children?: any;
   primary_color;
   date_end;

@@ -12,6 +12,7 @@ export interface ListProps {
   activity: any;
   history?;
 }
+
 class List extends React.Component<ListProps, any> {
   constructor(props) {
     super(props);
@@ -36,11 +37,12 @@ class List extends React.Component<ListProps, any> {
       }
     );
   }
+  fmt() {}
   public render() {
     let { category } = this.state;
     let { activity, children, history } = this.props;
-    let opus_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
-    let vote_time: any = { starttime: '2018-09-07 21:15', endtime: '2018-09-14 21:15' };
+    let { date_start, date_end, join_start, join_end } = activity;
+
     if (!activity) return <div />;
     return (
       <div className="App__pcWrap">
@@ -48,13 +50,14 @@ class List extends React.Component<ListProps, any> {
           <div className="Header__panel">
             <Banner img={activity.kv} />
             <ActivityTitle title={activity.title} />
-            <ActivityTime opus_time={opus_time} vote_time={vote_time} />
+            <ActivityTime
+              date_start={date_start}
+              date_end={date_end}
+              join_start={join_start}
+              join_end={join_end}
+            />
             <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
-            <CountDown
-              date_end={activity.date_end}
-              time="6天 22:48:19"
-              primary_color={activity.primary_color}
-            >
+            <CountDown date_end={activity.date_end} primary_color={activity.primary_color}>
               <button
                 onClick={this.goOpus.bind(this)}
                 className="Header__apply-btn"
