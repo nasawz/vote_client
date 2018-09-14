@@ -1,9 +1,12 @@
 import * as React from 'react';
-import classnames from 'classnames'
+import classnames from 'classnames';
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 import Parse from '../../../api/parse';
-export interface OpusProps { }
+export interface OpusProps {
+  title;
+  primary_color;
+}
 
 class Opus extends React.Component<OpusProps, any> {
   constructor(props) {
@@ -19,7 +22,7 @@ class Opus extends React.Component<OpusProps, any> {
      */
     this.setState({
       uploading: true
-    })
+    });
     let file = e.target.files[0];
     let name = file.name;
     let parseFile = new Parse.File(name, file);
@@ -29,31 +32,32 @@ class Opus extends React.Component<OpusProps, any> {
         this.setState({
           uploading: false,
           imgUrl: res._url
-        })
+        });
       },
       (err) => {
         console.log(err);
         this.setState({
           uploading: false
-        })
+        });
       }
     );
   }
   delImg() {
     this.setState({
       imgUrl: ''
-    })
+    });
   }
   public render() {
-    let { uploading, imgUrl } = this.state
+    let { uploading, imgUrl } = this.state;
+    let { title, primary_color } = this.props;
     let cls = {
       'PubImgUpload__add-img': true,
-      'disabled': imgUrl ? true : false
-    }
+      disabled: imgUrl ? true : false
+    };
     return (
       <div>
         <ul className="Pub__panel">
-          <span className="Pub__title">新建投票活动（报名）</span>
+          <span className="Pub__title">{title}</span>
         </ul>
         <ul className="Pub__panel Pub__name-wrap">
           <label className="Pub__name Pub__label">名称：</label>
@@ -78,26 +82,29 @@ class Opus extends React.Component<OpusProps, any> {
                     <p className="PubImgUpload__pic-txt">上传图片</p>
                     <p className="PubImgUpload__pic-txt">(最多1张)</p>
                   </div>
-                  {!imgUrl && <input
-                    type="file"
-                    name="file"
-                    id=""
-                    accept="image/gif,image/jpeg,image/jpg,image/png"
-                    className="PubImgUpload__input"
-                    onChange={this.onchange.bind(this)}
-                  />}
+                  {!imgUrl && (
+                    <input
+                      type="file"
+                      name="file"
+                      id=""
+                      accept="image/gif,image/jpeg,image/jpg,image/png"
+                      className="PubImgUpload__input"
+                      onChange={this.onchange.bind(this)}
+                    />
+                  )}
                 </div>
               </div>
-              {imgUrl && <div className="PubImgUpload__avatar-content">
-                <img
-                  src={imgUrl}
-                  className="PubImgUpload__avatar"
-                />
-                <div className="PubImgUpload__close-icon" onClick={this.delImg.bind(this)} />
-              </div>}
-              {uploading && <div className="PubImgUpload__loading-wrap">
-                <div className="PubImgUpload__loading" />
-              </div>}
+              {imgUrl && (
+                <div className="PubImgUpload__avatar-content">
+                  <img src={imgUrl} className="PubImgUpload__avatar" />
+                  <div className="PubImgUpload__close-icon" onClick={this.delImg.bind(this)} />
+                </div>
+              )}
+              {uploading && (
+                <div className="PubImgUpload__loading-wrap">
+                  <div className="PubImgUpload__loading" />
+                </div>
+              )}
             </div>
           </div>
         </ul>
@@ -138,7 +145,7 @@ class Opus extends React.Component<OpusProps, any> {
           <button
             className="Pub__btn"
             style={{
-              backgroundColor: 'rgb(57, 150, 246)',
+              backgroundColor: primary_color,
               color: 'rgb(255, 255, 255)'
             }}
           >
@@ -209,7 +216,10 @@ class Opus extends React.Component<OpusProps, any> {
 }
 
 const mapState2Props = (state) => {
-  return {};
+  return {
+    title: state.activity.title,
+    primary_color: state.activity.primary_color
+  };
 };
 
 export default connect(mapState2Props)(Opus);

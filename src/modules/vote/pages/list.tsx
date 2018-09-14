@@ -65,6 +65,7 @@ class List extends React.Component<ListProps, any> {
             <Category
               activeKey={category ? category : activity.categorys[0]}
               categories={activity.categorys}
+              primary_color={activity.primary_color}
               clickHandler={this.clickHandler.bind(this)}
             />
             <RankBtn
