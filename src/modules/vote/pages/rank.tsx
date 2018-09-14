@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import Auth from '../../../components/auth';
 // import Paper from '../../../components/paper';
 import Category from '../../../components/Category';
+import RankItem from '../../../components/RankItem';
 export interface RankProps {
   activity: any;
 }
@@ -62,53 +63,36 @@ class Rank extends React.Component<RankProps, any> {
               </div>
               <div className="Charts__wrap-bottom">
                 <ul className="Charts__model-ul">
-                  <li>
-                    <img src="assets/images/rank_1.png" />
-                    <p className="Charts__model-name Charts__model-name1">aa</p>
-                    <p
-                      className="Charts__model-num Charts__model-num1"
-                      style={{ color: activity.primary_color }}
-                    >
-                      2<span className="Charts__ticket-unit">票</span>
-                    </p>
-                  </li>
-                  <li>
-                    <img src="assets/images/rank_2.png" />
-                    <p className="Charts__model-name Charts__model-name1">aa</p>
-                    <p
-                      className="Charts__model-num Charts__model-num1"
-                      style={{ color: activity.primary_color }}
-                    >
-                      2<span className="Charts__ticket-unit">票</span>
-                    </p>
-                  </li>
-                  <li>
-                    <img src="assets/images/rank_3.png" />
-                    <p className="Charts__model-name Charts__model-name1">aa</p>
-                    <p
-                      className="Charts__model-num Charts__model-num1"
-                      style={{ color: activity.primary_color }}
-                    >
-                      2<span className="Charts__ticket-unit">票</span>
-                    </p>
-                  </li>
-                  <li>
-                    <div
-                      className="Charts__circle"
-                      style={{
-                        backgroundColor: activity.primary_color
-                      }}
-                    >
-                      <span className="Charts__number">4</span>
-                    </div>
-                    <p className="Charts__model-name Charts__model-name1">aa</p>
-                    <p
-                      className="Charts__model-num Charts__model-num1"
-                      style={{ color: activity.primary_color }}
-                    >
-                      2<span className="Charts__ticket-unit">票</span>
-                    </p>
-                  </li>
+                  <RankItem
+                    activity={activity}
+                    rank={{
+                      num: 1
+                    }}
+                  />
+                  <RankItem
+                    activity={activity}
+                    rank={{
+                      num: 2
+                    }}
+                  />
+                  <RankItem
+                    activity={activity}
+                    rank={{
+                      num: 2
+                    }}
+                  />
+                  <RankItem
+                    activity={activity}
+                    rank={{
+                      num: 3
+                    }}
+                  />
+                  <RankItem
+                    activity={activity}
+                    rank={{
+                      num: 4
+                    }}
+                  />
                 </ul>
               </div>
             </div>
