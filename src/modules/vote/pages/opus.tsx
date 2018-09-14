@@ -3,9 +3,12 @@ import classnames from 'classnames';
 import Alert from '../../../components/Alert';
 import { connect } from 'react-redux';
 import Parse from '../../../api/parse';
+import { Picker, List } from 'antd-mobile';
+import _ from 'lodash';
 export interface OpusProps {
   title;
   primary_color;
+  categorys;
 }
 
 class Opus extends React.Component<OpusProps, any> {
@@ -13,7 +16,8 @@ class Opus extends React.Component<OpusProps, any> {
     super(props);
     this.state = {
       uploading: false,
-      imgUrl: ''
+      imgUrl: '',
+      category: null
     };
   }
   onchange(e) {
@@ -49,7 +53,7 @@ class Opus extends React.Component<OpusProps, any> {
   }
   public render() {
     let { uploading, imgUrl } = this.state;
-    let { title, primary_color } = this.props;
+    let { title, primary_color, categorys } = this.props;
     let cls = {
       'PubImgUpload__add-img': true,
       disabled: imgUrl ? true : false
@@ -65,6 +69,22 @@ class Opus extends React.Component<OpusProps, any> {
             <input placeholder="请输入名称，必填" maxLength={100} className="Pub__name-input" />
             <span className="Pub__txt-len">0/100</span>
           </div>
+        </ul>
+        <ul className="Pub__panel Pub__category-wrap">
+          <Picker
+            data={_.map(categorys, (c) => {
+              return {
+                label: c,
+                value: c
+              };
+            })}
+            cols={1}
+            extra="请选择"
+            onChange={(v) => this.setState({ category: v })}
+            value={this.state.category}
+          >
+            <List.Item arrow="horizontal">类别</List.Item>
+          </Picker>
         </ul>
         <ul className="Pub__panel">
           <span className="Pub__label">详细介绍：</span>
@@ -115,26 +135,7 @@ class Opus extends React.Component<OpusProps, any> {
         <ul className="Pub__panel">
           <div>
             <span className="PubCustomSettings__label">其他信息：</span>
-            <li>
-              <div className="PubCustomSettings__single-select-wrap">
-                <span className="PubCustomSettings__single-select-label">请选择性别，选填</span>
-                <span className="PubCustomSettings__right-icon PubCustomSettings__single-select-val" />
-                <span className="PubCustomSettings__single-select-val" />
-              </div>
-              <div>
-                <div className="RadioGroup__content">
-                  <li className="RadioGroup__item-wrap">
-                    <span className="RadioGroup__label">男</span>
-                    <span className="RadioGroup__radio" />
-                  </li>
-                  <li className="RadioGroup__item-wrap">
-                    <span className="RadioGroup__label">女</span>
-                    <span className="RadioGroup__radio RadioGroup__selected" />
-                  </li>
-                </div>
-                <div className="RadioGroup__wrap" />
-              </div>
-            </li>
+            <li />
             <li>
               <div className="InputField__wrap">
                 <input required className="InputField__input" maxLength={100} />
@@ -239,6 +240,7 @@ class Opus extends React.Component<OpusProps, any> {
 const mapState2Props = (state) => {
   return {
     title: state.activity.title,
+    categorys: state.activity.categorys,
     primary_color: state.activity.primary_color
   };
 };
