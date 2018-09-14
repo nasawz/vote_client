@@ -58,10 +58,16 @@ export const getVoteItems = (
 
 export const getVoteItem = (activityId, id) => {
   return axios.get(`/api/vote/voteItem/${activityId}/${id}`);
-  // const VoteItem = Parse.Object.extend('vote_item');
-  // const query = new Parse.Query(VoteItem);
-  // query.equalTo('objectId', id);
-  // return query.first();
+};
+
+export const getRankList = (activityId, limit, skip, category) => {
+  return axios.get(`/api/vote/voteItems/${activityId}`, {
+    params: {
+      limit,
+      skip,
+      category
+    }
+  });
 };
 
 export const touch = () => {

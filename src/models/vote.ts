@@ -4,7 +4,8 @@ import {
   getMyVoteItem,
   delVoteItem,
   addVote,
-  addVoteItem
+  addVoteItem,
+  getRankList
 } from '../api';
 import { IOrder } from '../api';
 import _ from 'lodash';
@@ -13,7 +14,7 @@ export interface IQueryItemsParams {
   activityId: string;
   limit: number;
   skip: number;
-  order: IOrder;
+  order?: IOrder;
   category: string;
 }
 
@@ -180,6 +181,21 @@ export const vote = {
       try {
         let res = await addVoteItem(params.activityId, params.data);
         return res.data;
+      } catch (error) {
+        return null;
+      }
+    },
+    /**
+     * 获取排行榜列表
+     * @param params
+     * @param rootState
+     */
+    async getRankListAsync(params: IQueryItemsParams, rootState) {
+      try {
+        let res = await getRankList(params.activityId, params.limit, params.skip, params.order);
+        let items = res.data;
+        dispatch.vote.setRankList(items);
+        return items;
       } catch (error) {
         return null;
       }
