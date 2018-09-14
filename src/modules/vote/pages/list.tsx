@@ -10,6 +10,8 @@ import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
 export interface ListProps {
   activity: any;
+  user;
+  my_vote_item;
   history?;
 }
 
@@ -22,6 +24,9 @@ class List extends React.Component<ListProps, any> {
   }
   goOpus() {
     this.props.history.push(`/vote/opus`);
+  }
+  goMe() {
+    this.props.history.push(`/vote/me`);
   }
   //投票
   vote(id) {
@@ -38,6 +43,52 @@ class List extends React.Component<ListProps, any> {
     );
   }
   fmt() {}
+  renderJoinBtn() {
+    let { join_rule, join_end, primary_color } = this.props.activity;
+    let { type } = this.props.user;
+    let { my_vote_item } = this.props;
+    console.log(this.props.user);
+    if (join_rule == 2) {
+      // 企业用户才可参与
+      if (type != '2') {
+        return '';
+      }
+    }
+    let isEnd = false;
+    if (new Date() > join_end) {
+      isEnd = true;
+    }
+    let hasJoin = my_vote_item != null ? true : false;
+    if (hasJoin) {
+      return (
+        <button
+          onClick={this.goMe.bind(this)}
+          className="Header__apply-btn"
+          style={{
+            borderColor: primary_color,
+            color: primary_color
+          }}
+        >
+          我的报名
+        </button>
+      );
+    }
+    if (isEnd) {
+      return '';
+    }
+    return (
+      <button
+        onClick={this.goOpus.bind(this)}
+        className="Header__apply-btn"
+        style={{
+          borderColor: primary_color,
+          color: primary_color
+        }}
+      >
+        报名
+      </button>
+    );
+  }
   public render() {
     let { category } = this.state;
     let { activity, children, history } = this.props;
@@ -58,16 +109,7 @@ class List extends React.Component<ListProps, any> {
             />
             <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
             <CountDown date_end={activity.date_end} primary_color={activity.primary_color}>
-              <button
-                onClick={this.goOpus.bind(this)}
-                className="Header__apply-btn"
-                style={{
-                  borderColor: activity.primary_color,
-                  color: activity.primary_color
-                }}
-              >
-                报名
-              </button>
+              {this.renderJoinBtn()}
             </CountDown>
             <Category
               activeKey={category ? category : activity.categorys[0]}
@@ -121,8 +163,11 @@ class List extends React.Component<ListProps, any> {
 }
 
 const mapState2Props = (state) => {
+  console.log(state);
   return {
-    activity: state.activity
+    activity: state.activity,
+    user: state.user,
+    my_vote_item: state.vote.my_vote_item
   };
 };
 
