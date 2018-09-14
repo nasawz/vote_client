@@ -50,13 +50,17 @@ class List extends React.Component<ListProps, any> {
             <ActivityTitle title={activity.title} />
             <ActivityTime opus_time={opus_time} vote_time={vote_time} />
             <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
-            <CountDown time="6天 22:48:19">
+            <CountDown
+              date_end={activity.date_end}
+              time="6天 22:48:19"
+              primary_color={activity.primary_color}
+            >
               <button
                 onClick={this.goOpus.bind(this)}
                 className="Header__apply-btn"
                 style={{
-                  borderColor: 'rgb(57, 150, 246)',
-                  color: 'rgb(57, 150, 246)'
+                  borderColor: activity.primary_color,
+                  color: activity.primary_color
                 }}
               >
                 报名
