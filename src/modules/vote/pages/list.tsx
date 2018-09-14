@@ -49,7 +49,7 @@ class List extends React.Component<ListProps, any> {
             <Banner img={activity.kv} />
             <ActivityTitle title={activity.title} />
             <ActivityTime opus_time={opus_time} vote_time={vote_time} />
-            <ActivityIntro />
+            <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
             <CountDown time="6天 22:48:19">
               <button
                 onClick={this.goOpus.bind(this)}
