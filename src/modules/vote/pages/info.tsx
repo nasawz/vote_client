@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-export interface InfoProps {}
+export interface InfoProps {
+  primary_color;
+}
 
 class Info extends React.Component<InfoProps, any> {
   public render() {
+    let { primary_color } = this.props;
     return (
       <div>
         <div className="Detail__detail-wrap">
@@ -32,7 +35,7 @@ class Info extends React.Component<InfoProps, any> {
                 <span
                   className="k-i-time-o Detail__time-pic"
                   style={{
-                    color: 'rgb(57, 150, 246)'
+                    color: primary_color
                   }}
                 />
               </span>
@@ -41,8 +44,8 @@ class Info extends React.Component<InfoProps, any> {
               <button
                 className="Detail__vote-btn"
                 style={{
-                  borderColor: 'rgb(57, 150, 246)',
-                  color: 'rgb(57, 150, 246)'
+                  borderColor: primary_color,
+                  color: primary_color
                 }}
               >
                 投我一票
@@ -67,7 +70,7 @@ class Info extends React.Component<InfoProps, any> {
               <span
                 className="Detail__touch"
                 style={{
-                  color: 'rgb(57, 150, 246)'
+                  color: primary_color
                 }}
               >
                 回首页
@@ -131,7 +134,9 @@ class Info extends React.Component<InfoProps, any> {
 }
 
 const mapState2Props = (state) => {
-  return {};
+  return {
+    primary_color: state.activity.primary_color
+  };
 };
 
 export default connect(mapState2Props)(Info);
