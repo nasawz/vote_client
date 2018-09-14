@@ -5,17 +5,12 @@ export interface AlertProps {
     img?
     remind?
     doClose?
-    doConfirm?
 }
 
 export default class Alert extends React.Component<AlertProps, any> {
     doClose() {
         let { doClose } = this.props
         doClose && doClose()
-    }
-    doConfirm() {
-        let { doConfirm } = this.props
-        doConfirm && doConfirm()
     }
     public render() {
         let { show, img, remind } = this.props
@@ -42,7 +37,7 @@ export default class Alert extends React.Component<AlertProps, any> {
                                 backgroundColor: 'rgb(57, 150, 246)',
                                 color: 'rgb(255, 255, 255)'
                             }}
-                            onClick={this.doConfirm.bind(this)}
+                            onClick={this.doClose.bind(this)}
                         >
                             确认
                         </button>

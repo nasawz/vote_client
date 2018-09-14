@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 export interface CardProps {
+  primary_color: any
   opus: any;
   sendVote: any;
+  index: any
 }
 
 export default class Card extends React.Component<CardProps, any> {
@@ -12,25 +14,25 @@ export default class Card extends React.Component<CardProps, any> {
     }
   }
   public render() {
-    let { opus } = this.props;
-    if (!opus) return <div />;
+    let { primary_color, opus, index } = this.props;
+    opus = opus || {}
     return (
       <div className="FlowItem__item List__left-column">
         <div>
-          <div className="">
-            <div
+          <div className="" style={{ height: '128px', overflow: 'hidden' }}>
+            {index < 3 && <div
               className="FlowItem__num"
               style={{
-                backgroundColor: 'rgb(57, 150, 246)',
+                backgroundColor: primary_color,
                 color: 'rgb(255, 255, 255)'
               }}
             >
-              {opus.rank}
-            </div>
-            <img src="" className="FlowItem__avatar" />
+              {parseInt(index) + 1}
+            </div>}
+            <img src={opus.pic} className="FlowItem__avatar" />
           </div>
           <div>
-            <label className="FlowItem__title">{opus.name}</label>
+            <label className="FlowItem__title">{opus.title}</label>
             <div className="FlowItem__desc">{opus.desc}</div>
           </div>
         </div>
@@ -38,20 +40,20 @@ export default class Card extends React.Component<CardProps, any> {
           <span
             className="FlowItem__vote-num"
             style={{
-              color: 'rgb(57, 150, 246)'
+              color: primary_color
             }}
           >
-            3
+            {opus.score}
           </span>
           <span className="FlowItem__vote-num-desc">票</span>
         </div>
         <div className="FlowItem__btn">
           <div>
             <button
-              onClick={this.sendVote.bind(this, opus.id)}
+              onClick={this.sendVote.bind(this, opus.objectId)}
               className="VoteButton__subcontent VoteButton__small undefined"
               style={{
-                backgroundColor: 'rgb(57, 150, 246)',
+                backgroundColor: primary_color,
                 color: 'rgb(255, 255, 255)'
               }}
             >
