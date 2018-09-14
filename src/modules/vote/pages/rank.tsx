@@ -13,7 +13,7 @@ export interface RankProps {
 }
 
 const NUM_ROWS = 20;
-let pageIndex = 0;
+let pageIndex = 1;
 
 class Rank extends React.Component<RankProps, any> {
   flag: any;
@@ -27,7 +27,7 @@ class Rank extends React.Component<RankProps, any> {
     let { activity } = this.props;
     this.state = {
       category: activity.categorys[0],
-      page_num: 1,
+      // pageIndex: 1,
       dataSource
     };
   }
@@ -53,8 +53,8 @@ class Rank extends React.Component<RankProps, any> {
   }
   getData() {
     let { activity } = this.props;
-    let limit = 1;
-    let skip = limit * (this.state.page_num - 1);
+    let limit = 4;
+    let skip = limit * (pageIndex - 1);
     let activityId = activity.objectId;
     let category = this.state.category;
     this.props.getRankListAsync({
@@ -73,6 +73,12 @@ class Rank extends React.Component<RankProps, any> {
     }
     console.log('reach end', event);
     this.setState({ isLoading: true });
+    pageIndex = pageIndex + 1;
+    this.getData();
+    // this.setState({
+    //   dataSource: this.state.dataSource.cloneWithRows(this.rData),
+    //   isLoading: false
+    // });
     // setTimeout(() => {
     //   this.rData = { ...this.rData, ...genData(++pageIndex) };
     //   this.setState({
@@ -85,7 +91,8 @@ class Rank extends React.Component<RankProps, any> {
   componentWillReceiveProps(nextProps) {
     if (nextProps.rank_list !== this.props.rank_list) {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(nextProps.rank_list)
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.rank_list),
+        isLoading: false
       });
     }
   }
