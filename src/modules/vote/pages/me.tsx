@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 
 export interface MeProps {
   primary_color;
+  my_vote_item;
 }
 
 class Me extends React.Component<MeProps, any> {
   public render() {
-    let { primary_color } = this.props;
+    let { primary_color, my_vote_item } = this.props;
     return (
       <div>
         <div className="MySignUp__wrap">
@@ -16,19 +17,17 @@ class Me extends React.Component<MeProps, any> {
               <div className="signUpInformation__signup-info">报名信息</div>
               <div className="signUpInformation__detail">
                 <div className="signUpInformation__info-pic">
-                  <img
-                    src="http://voteres.baleina.cn/cover12.jpg-75"
-                    className="signUpInformation__pic"
-                  />
+                  <img src={my_vote_item.pic} className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num">3</span>
                   <img src="assets/images/pic.png" className="signUpInformation__icon" />
                 </div>
                 <div className="signUpInformation__information">
-                  <p className="signUpInformation__name">名称: sfdasdf</p>
-                  <p className="signUpInformation__introduction">详细介绍: sfdasdfasdfasd</p>
-                  <p className="signUpInformation__introduction">性别: 男</p>
+                  <p className="signUpInformation__name">名称: {my_vote_item.title}</p>
+                  <p className="signUpInformation__introduction">分类: {my_vote_item.category}</p>
+                  <p className="signUpInformation__introduction">详细介绍: {my_vote_item.desc}</p>
+                  {/* <p className="signUpInformation__introduction">性别: 男</p>
                   <p className="signUpInformation__introduction">年龄: sdfasdf</p>
-                  <p className="signUpInformation__introduction">备注: asdfasdf</p>
+                  <p className="signUpInformation__introduction">备注: asdfasdf</p> */}
                 </div>
               </div>
             </div>
@@ -55,7 +54,8 @@ class Me extends React.Component<MeProps, any> {
 
 const mapState2Props = (state) => {
   return {
-    primary_color: state.activity.primary_color
+    primary_color: state.activity.primary_color,
+    my_vote_item: state.vote.my_vote_item
   };
 };
 
