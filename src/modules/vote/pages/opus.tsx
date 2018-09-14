@@ -96,7 +96,7 @@ class Opus extends React.Component<OpusProps, any> {
               </div>
               {imgUrl && (
                 <div className="PubImgUpload__avatar-content">
-                  <img src={imgUrl} className="PubImgUpload__avatar" />
+                  <img src={`${imgUrl}-75`} className="PubImgUpload__avatar" />
                   <div className="PubImgUpload__close-icon" onClick={this.delImg.bind(this)} />
                 </div>
               )}
