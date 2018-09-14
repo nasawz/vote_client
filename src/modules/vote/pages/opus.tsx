@@ -12,6 +12,7 @@ export interface OpusProps {
   history;
   addVoteItem;
   activityId;
+  getMyVoteItem;
 }
 
 class Opus extends React.Component<OpusProps, any> {
@@ -41,7 +42,6 @@ class Opus extends React.Component<OpusProps, any> {
     let parseFile = new Parse.File(name, file);
     parseFile.save().then(
       (res) => {
-        console.log(res);
         this.setState({
           uploading: false,
           imgUrl: res._url
@@ -101,7 +101,7 @@ class Opus extends React.Component<OpusProps, any> {
   }
   async onConfirm() {
     let { title, desc, category, imgUrl, loading } = this.state;
-    let { activityId } = this.props;
+    let { activityId, getMyVoteItem } = this.props;
     if (!loading) {
       this.setState({ loading: true });
       try {
@@ -110,11 +110,12 @@ class Opus extends React.Component<OpusProps, any> {
           data: {
             title,
             desc,
-            category,
+            category: category[0],
             pic: imgUrl
           }
         });
         this.setState({ showPubConfirmModal: false, pubResult: 'succ' });
+        getMyVoteItem(activityId);
         this.openPubRemindModal();
       } catch (error) {
         this.setState({ showPubConfirmModal: false, pubResult: 'fail' });
@@ -357,7 +358,6 @@ class Opus extends React.Component<OpusProps, any> {
 }
 
 const mapState2Props = (state) => {
-  console.log(state);
   return {
     title: state.activity.title,
     activityId: state.activity.objectId,
@@ -366,8 +366,9 @@ const mapState2Props = (state) => {
   };
 };
 
-const mapDispatch2Props = ({ vote: { addVoteItemAsync } }) => ({
-  addVoteItem: addVoteItemAsync
+const mapDispatch2Props = ({ vote: { addVoteItemAsync, getMyVoteItemAsync } }) => ({
+  addVoteItem: addVoteItemAsync,
+  getMyVoteItem: getMyVoteItemAsync
 });
 
 export default connect(
