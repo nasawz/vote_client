@@ -44,7 +44,7 @@ class Page extends React.Component<PageProps, any> {
     return (
       <div>
         <Route path={`${match.url}/list`} component={List} />
-        <Route path={`${match.url}/info`} component={Info} />
+        <Route path={`${match.url}/info/:id`} component={Info} />
         <Route path={`${match.url}/opus`} component={Opus} />
         <Route path={`${match.url}/rank`} component={Rank} />
         <Route path={`${match.url}/me`} component={Me} />

@@ -14,6 +14,10 @@ class Me extends React.Component<MeProps, any> {
   goBack() {
     this.props.history.goBack();
   }
+  goInfo() {
+    let { my_vote_item } = this.props;
+    this.props.history.push(`/vote/info/${my_vote_item.objectId}`);
+  }
   doDel() {
     let { activityId, my_vote_item, delMyVoteItem, history } = this.props;
     alert('删除', '删除后无法恢复', [
@@ -47,7 +51,7 @@ class Me extends React.Component<MeProps, any> {
           <div className="MySignUp__split">
             <div className="signUpInformation__info-wrap">
               <div className="signUpInformation__signup-info">报名信息</div>
-              <div className="signUpInformation__detail">
+              <div className="signUpInformation__detail" onClick={this.goInfo.bind(this)}>
                 <div className="signUpInformation__info-pic">
                   <img src={my_vote_item.pic} className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num" />
@@ -57,6 +61,10 @@ class Me extends React.Component<MeProps, any> {
                   <p className="signUpInformation__name">名称: {my_vote_item.title}</p>
                   <p className="signUpInformation__introduction">分类: {my_vote_item.category}</p>
                   <p className="signUpInformation__introduction">详细介绍: {my_vote_item.desc}</p>
+                  <p className="signUpInformation__introduction">
+                    当前为第
+                    {my_vote_item.rank}名
+                  </p>
                   {/* <p className="signUpInformation__introduction">性别: 男</p>
                   <p className="signUpInformation__introduction">年龄: sdfasdf</p>
                   <p className="signUpInformation__introduction">备注: asdfasdf</p> */}

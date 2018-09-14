@@ -169,7 +169,7 @@ export const vote = {
         dispatch.vote.incrementScore(params.id);
         return vote;
       } catch (error) {
-        return null;
+        throw new Error(error.response.data.message);
       }
     },
     /**
