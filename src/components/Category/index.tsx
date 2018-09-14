@@ -20,13 +20,9 @@ export default class Category extends React.Component<CategoryProps, any> {
         'Header__statistics-item': true,
         active: category === activeKey
       };
-      let style = { color: cls.active ? primary_color : '' };
+      let style = { color: cls.active ? primary_color : '', lineHeight: '0.8rem' };
       return (
         <li className={classnames(cls)} onClick={this.clickHandler.bind(this, category)}>
-          <span className="Header__font" style={style}>
-            1
-          </span>{' '}
-          <br />
           <span className="Header__label-content" style={style}>
             {category}
           </span>
