@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin-hash');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 const UUID = require('uuid');
 module.exports = (type) => {
   const isDev = type === 'dev';
@@ -153,6 +154,15 @@ module.exports = (type) => {
           loader: 'ts-loader',
           options: {
             transpileOnly: true,
+            getCustomTransformers: () => ({
+              before: [
+                tsImportPluginFactory({
+                  libraryName: 'antd-mobile',
+                  style: true,
+                  libraryDirectory: 'lib'
+                })
+              ]
+            }),
             compilerOptions: {
               module: 'es2015'
             }
