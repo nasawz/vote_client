@@ -4,20 +4,40 @@ import { connect } from 'react-redux';
 // import Paper from '../../../components/paper';
 import Category from '../../../components/Category';
 import RankItem from '../../../components/RankItem';
+import { ListView } from 'antd-mobile';
 export interface RankProps {
   activity: any;
   getRankListAsync: any;
   rank_list: any;
+  dataSource: any;
 }
 
+const NUM_ROWS = 20;
+let pageIndex = 1;
+
 class Rank extends React.Component<RankProps, any> {
+  flag: any;
+  rData: any;
+  lv: any;
   constructor(props) {
     super(props);
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2
+    });
     let { activity } = this.props;
     this.state = {
       category: activity.categorys[0],
-      page_num: 1
+      // pageIndex: 1,
+      dataSource
     };
+  }
+  genData(pIndex = 0) {
+    const dataBlob = {};
+    for (let i = 0; i < NUM_ROWS; i++) {
+      const ii = pIndex * NUM_ROWS + i;
+      dataBlob[`${ii}`] = `row - ${ii}`;
+    }
+    return dataBlob;
   }
   clickHandler(category) {
     this.setState(
@@ -27,14 +47,14 @@ class Rank extends React.Component<RankProps, any> {
       () => {
         // 获取列表数据
         console.log(this.state.category);
+        this.getData();
       }
     );
   }
   getData() {
     let { activity } = this.props;
-
-    let limit = 10;
-    let skip = limit * (this.state.page_num - 1);
+    let limit = 4;
+    let skip = limit * (pageIndex - 1);
     let activityId = activity.objectId;
     let category = this.state.category;
     this.props.getRankListAsync({
@@ -44,8 +64,48 @@ class Rank extends React.Component<RankProps, any> {
       category
     });
   }
+  onEndReached = (event) => {
+    console.log('---------');
+    // load new data
+    // hasMore: from backend data, indicates whether it is the last page, here is false
+    if (this.state.isLoading && !this.state.hasMore) {
+      return;
+    }
+    console.log('reach end', event);
+    this.setState({ isLoading: true });
+    pageIndex = pageIndex + 1;
+    this.getData();
+    // this.setState({
+    //   dataSource: this.state.dataSource.cloneWithRows(this.rData),
+    //   isLoading: false
+    // });
+    // setTimeout(() => {
+    //   this.rData = { ...this.rData, ...genData(++pageIndex) };
+    //   this.setState({
+    //     dataSource: this.state.dataSource.cloneWithRows(this.rData),
+    //     isLoading: false
+    //   });
+    // }, 1000);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.rank_list !== this.props.rank_list) {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(nextProps.rank_list),
+        isLoading: false
+      });
+    }
+  }
+
   componentDidMount() {
     this.getData();
+    // setTimeout(() => {
+    //   this.rData = this.genData();
+    //   this.setState({
+    //     dataSource: this.state.dataSource.cloneWithRows(this.rData),
+    //     isLoading: false
+    //   });
+    // }, 600);
   }
   renderItem() {
     let { rank_list, activity } = this.props;
@@ -57,7 +117,26 @@ class Rank extends React.Component<RankProps, any> {
   public render() {
     let { category } = this.state;
     let { activity, rank_list } = this.props;
-    console.log('rank_list', rank_list);
+    const separator = (sectionID, rowID) => (
+      <div
+        key={`${sectionID}-${rowID}`}
+        style={{
+          backgroundColor: '#F5F5F9',
+          height: 8,
+          borderTop: '1px solid #ECECED',
+          borderBottom: '1px solid #ECECED'
+        }}
+      />
+    );
+    let index = 0;
+    const row = (rowData, sectionID, rowID) => {
+      if (index == rank_list.length - 1) {
+        index = rank_list.length - 1;
+      }
+      const obj = rank_list[index++];
+      return <RankItem activity={activity} rank={obj} />;
+    };
+
     return (
       <div>
         <div className="Charts__wrap">
@@ -92,7 +171,31 @@ class Rank extends React.Component<RankProps, any> {
                 <span className="Charts__list-num">票数</span>
               </div>
               <div className="Charts__wrap-bottom">
-                <ul className="Charts__model-ul">{this.renderItem()}</ul>
+                <ul className="Charts__model-ul">
+                  <ListView
+                    ref={(el) => (this.lv = el)}
+                    dataSource={this.state.dataSource}
+                    renderHeader={() => <span>header</span>}
+                    renderFooter={() => (
+                      <div style={{ padding: 30, textAlign: 'center' }}>
+                        {this.state.isLoading ? 'Loading...' : 'Loaded'}
+                      </div>
+                    )}
+                    renderRow={row}
+                    // renderSeparator={separator}
+                    className="am-list"
+                    pageSize={4}
+                    useBodyScroll
+                    onScroll={() => {
+                      console.log('scroll');
+                    }}
+                    scrollRenderAheadDistance={500}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={10}
+                  />
+
+                  {/* {this.renderItem()} */}
+                </ul>
               </div>
             </div>
           </div>
