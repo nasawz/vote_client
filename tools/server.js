@@ -9,19 +9,6 @@ const config = require('./config');
 
 const proxy = require('http-proxy-middleware');
 
-var options = {
-  target: 'http://vote.baleina.cn/',
-  secure: false,
-  changeOrigin: true,
-  ws: true,
-  ignorePath: false,
-  pathRewrite: {
-    // '^/api': ''
-  }
-};
-
-var webProxy = proxy(options);
-
 function startDevServer() {
   const app = express();
   /*=============webpack start==============*/
@@ -38,8 +25,8 @@ function startDevServer() {
   /*=============proxy start==============*/
   (() => {
     const proxy_options = {
-      target: 'http://vote.baleina.cn/',
-      // target: 'http://localhost:1337/',
+      // target: 'http://vote.baleina.cn/',
+      target: 'http://localhost:1337/',
       secure: false,
       changeOrigin: true,
       ws: true,

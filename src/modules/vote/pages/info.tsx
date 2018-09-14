@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-
+declare let window: any;
 export interface InfoProps {
   primary_color;
   location;
@@ -13,6 +13,7 @@ export interface InfoProps {
   show_info_back;
   date_end;
   addVote;
+  activity;
 }
 
 class Info extends React.Component<InfoProps, any> {
@@ -44,8 +45,15 @@ class Info extends React.Component<InfoProps, any> {
   }
   async componentWillMount() {
     let { id } = this.props.match.params;
-    let { activityId } = this.props;
-    await this.props.getVoteItem({ activityId, id });
+    let { activityId, activity } = this.props;
+    let vote_item = await this.props.getVoteItem({ activityId, id });
+    window._wxData = {
+      wxtitle: `快来为 ${vote_item.title} 投票吧！`,
+      wxlink: window.location.href,
+      wxdesc: `${activity.title}正在进行中，快来投票吧`,
+      wximgUrl: `${vote_item.pic}-700`
+    };
+    window.changeWx();
   }
   componentDidMount() {
     let { date_end } = this.props;
@@ -213,6 +221,7 @@ const mapState2Props = (state) => {
     date_end: state.activity.date_end,
     title: state.activity.title,
     activityId: state.activity.objectId,
+    activity: state.activity,
     show_info_back: state.activity.show_info_back,
     vote_item: state.vote.vote_item,
     primary_color: state.activity.primary_color

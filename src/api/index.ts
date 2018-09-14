@@ -73,3 +73,7 @@ export const getRankList = (activityId, limit, skip, category) => {
 export const touch = () => {
   return axios.get(`/api/user/touch`);
 };
+
+export const getJsConfig = (activityId, url) => {
+  return axios.post(`/api/wx/jsconfig/${activityId}`, { url });
+};

@@ -138,7 +138,11 @@ module.exports = (type) => {
         }
       ]),
       new HtmlWebpackIncludeAssetsPlugin({
-        assets: ['lib/react.production.min.js', 'lib/react-dom.production.min.js'],
+        assets: [
+          'lib/react.production.min.js',
+          'lib/react-dom.production.min.js',
+          'lib/jweixin-1.2.0.js'
+        ],
         append: false
       }),
       new webpack.DefinePlugin({
