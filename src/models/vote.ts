@@ -192,7 +192,7 @@ export const vote = {
      */
     async getRankListAsync(params: IQueryItemsParams, rootState) {
       try {
-        let res = await getRankList(params.activityId, params.limit, params.skip, params.order);
+        let res = await getRankList(params.activityId, params.limit, params.skip, params.category);
         let items = res.data;
         dispatch.vote.setRankList(items);
         return items;
