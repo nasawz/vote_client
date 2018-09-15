@@ -10,25 +10,25 @@ import CountDown from '../../../components/CountDown';
 import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
 import Alert from '../../../components/Alert';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 export interface ListProps {
   activity: any;
   user;
   my_vote_item;
   history?;
-  vote_items
-  getVoteItems
-  clearVoteItems
-  addVote
+  vote_items;
+  getVoteItems;
+  clearVoteItems;
+  addVote;
 }
 
 class List extends React.Component<ListProps, any> {
-  flag: any
+  flag: any;
   constructor(props) {
     super(props);
-    let { activity } = this.props
+    let { activity } = this.props;
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+      rowHasChanged: (row1, row2) => row1 !== row2
     });
     this.state = {
       activityId: activity.objectId,
@@ -53,46 +53,49 @@ class List extends React.Component<ListProps, any> {
   }
   //投票
   sendVote(id) {
-    let { activityId } = this.state
-    let { addVote } = this.props
+    let { activityId } = this.state;
+    let { addVote } = this.props;
     addVote({ activityId, id })
       .then(() => {
         this.setState({ show: true, voteResult: 'succ' });
-        this.showAlert()
+        this.showAlert();
       })
       .catch((err) => {
         this.setState({ show: true, voteResult: 'fail' });
-        this.showAlert()
-      })
+        this.showAlert();
+      });
   }
   showAlert() {
     this.setState({
       show: true
-    })
+    });
   }
   hideAlert() {
     this.setState({
       show: false
-    })
-  }
-  clickHandler(category) {
-    this.setState({
-      category,
-      pageNum: 0
-    }, () => {
-      this.getVoteItems()
     });
   }
-  fmt() { }
+  clickHandler(category) {
+    this.setState(
+      {
+        category,
+        pageNum: 0
+      },
+      () => {
+        this.getVoteItems();
+      }
+    );
+  }
+  fmt() {}
   getVoteItems() {
-    let { activityId, category, pageNum, limit, order } = this.state
-    let { getVoteItems, clearVoteItems } = this.props
-    let skip = pageNum * limit
-    clearVoteItems()
-    getVoteItems({ activityId, category, skip, limit, order })
+    let { activityId, category, pageNum, limit, order } = this.state;
+    let { getVoteItems, clearVoteItems } = this.props;
+    let skip = pageNum * limit;
+    clearVoteItems();
+    getVoteItems({ activityId, category, skip, limit, order });
   }
   componentDidMount() {
-    this.getVoteItems()
+    this.getVoteItems();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.vote_items !== this.props.vote_items) {
@@ -168,15 +171,18 @@ class List extends React.Component<ListProps, any> {
       return;
     }
     console.log('reach end', event);
-    this.setState({
-      isLoading: true,
-      pageNum: this.state.pageNum + 1
-    }, () => {
-      this.getVoteItems()
-    });
-  }
+    this.setState(
+      {
+        isLoading: true,
+        pageNum: this.state.pageNum + 1
+      },
+      () => {
+        this.getVoteItems();
+      }
+    );
+  };
   renderListView() {
-    let { vote_items, activity } = this.props
+    let { vote_items, activity } = this.props;
     const separator = (sectionID, rowID) => (
       <div
         key={`${sectionID}-${rowID}`}
@@ -184,12 +190,12 @@ class List extends React.Component<ListProps, any> {
           backgroundColor: '#F5F5F9',
           height: 8,
           borderTop: '1px solid #ECECED',
-          borderBottom: '1px solid #ECECED',
+          borderBottom: '1px solid #ECECED'
         }}
       />
     );
     let index = 0;
-    let vote_items_fix = _.orderBy(vote_items, ['score'], ['desc'])
+    let vote_items_fix = _.orderBy(vote_items, ['score'], ['desc']);
     const row = (rowData, sectionID, rowID) => {
       // return vote_items_fix.map((item, index) => {
 
@@ -207,30 +213,34 @@ class List extends React.Component<ListProps, any> {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-          {this.state.isLoading ? 'Loading...' : 'Loaded'}
-        </div>)}
+        renderFooter={() => (
+          <div style={{ padding: 30, textAlign: 'center' }}>
+            {this.state.isLoading ? 'Loading...' : 'Loaded'}
+          </div>
+        )}
         renderRow={row}
         className="am-list"
         pageSize={this.state.limit}
         useBodyScroll
-        onScroll={() => { console.log('scroll'); }}
+        onScroll={() => {
+          console.log('scroll');
+        }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
         onEndReachedThreshold={10}
       />
-    )
+    );
   }
   public render() {
     let { category, show, voteResult } = this.state;
     let { activity, children, history } = this.props;
     let { date_start, date_end, join_start, join_end } = activity;
     if (!activity) return <div />;
-    let img = "assets/images/join_succ.png"
-    let remind = '投票成功'
+    let img = 'assets/images/join_succ.png';
+    let remind = '投票成功';
     if (voteResult === 'fail') {
-      img = "assets/images/vote_fail.png"
-      remind = '投票失败'
+      img = 'assets/images/vote_fail.png';
+      remind = '投票失败';
     }
     return (
       <div className="App__pcWrap">
@@ -265,9 +275,7 @@ class List extends React.Component<ListProps, any> {
             />
           </div>
 
-          <div>
-            {this.renderListView()}
-          </div>
+          <div>{this.renderListView()}</div>
         </div>
         <Alert show={show} img={img} remind={remind} doClose={this.hideAlert.bind(this)} />
         {children}
