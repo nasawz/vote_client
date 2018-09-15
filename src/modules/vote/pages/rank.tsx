@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { ActivityIndicator, WingBlank, WhiteSpace, Button } from 'antd-mobile';
 // import Auth from '../../../components/auth';
 // import Paper from '../../../components/paper';
 import Category from '../../../components/Category';
@@ -103,17 +104,7 @@ class Rank extends React.Component<RankProps, any> {
   public render() {
     let { category } = this.state;
     let { activity, rank_list } = this.props;
-    const separator = (sectionID, rowID) => (
-      <div
-        key={`${sectionID}-${rowID}`}
-        style={{
-          backgroundColor: '#F5F5F9',
-          height: 8,
-          borderTop: '1px solid #ECECED',
-          borderBottom: '1px solid #ECECED'
-        }}
-      />
-    );
+
     const row = (rowData, sectionID, rowID) => {
       return <RankItem activity={activity} rank={rowData} />;
     };
@@ -159,17 +150,20 @@ class Rank extends React.Component<RankProps, any> {
                     renderHeader={() => <span>header</span>}
                     renderFooter={() => (
                       <div style={{ padding: 30, textAlign: 'center' }}>
-                        {this.state.isLoading ? 'Loading...' : 'Loaded'}
+                        {this.state.isLoading ? (
+                          <div className="loading-data">
+                            <ActivityIndicator size="small" text="Loading..." />
+                          </div>
+                        ) : (
+                          'Loaded'
+                        )}
                       </div>
                     )}
                     renderRow={row}
-                    // renderSeparator={separator}
                     className="am-list"
                     pageSize={4}
                     useBodyScroll
-                    onScroll={() => {
-                      console.log('scroll');
-                    }}
+                    onScroll={() => {}}
                     scrollRenderAheadDistance={500}
                     onEndReached={this.onEndReached}
                     onEndReachedThreshold={10}
