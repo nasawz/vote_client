@@ -107,6 +107,10 @@ class List extends React.Component<ListProps, any> {
       });
     }
   }
+  componentWillUnmount() {
+    let { clearVoteItems } = this.props
+    clearVoteItems()
+  }
   renderJoinBtn() {
     let { join_rule, join_end, join_start, primary_color } = this.props.activity;
     let { type } = this.props.user;
