@@ -55,7 +55,7 @@ class Me extends React.Component<MeProps, any> {
                 <div className="signUpInformation__info-pic">
                   <img src={my_vote_item.pic} className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num" />
-                  <img src="assets/images/pic.png" className="signUpInformation__icon" />
+                  <img src="/assets/images/pic.png" className="signUpInformation__icon" />
                 </div>
                 <div className="signUpInformation__information">
                   <p className="signUpInformation__name">名称: {my_vote_item.title}</p>

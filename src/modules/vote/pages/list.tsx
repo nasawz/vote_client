@@ -247,10 +247,10 @@ class List extends React.Component<ListProps, any> {
     let category = curr_category;
     let { date_start, date_end, join_start, join_end } = activity;
     if (!activity) return <div />;
-    let img = 'assets/images/join_succ.png';
+    let img = '/assets/images/join_succ.png';
     let remind = '投票成功';
     if (voteResult === 'fail') {
-      img = 'assets/images/vote_fail.png';
+      img = '/assets/images/vote_fail.png';
       remind = failMessage;
     }
     return (

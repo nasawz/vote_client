@@ -119,7 +119,7 @@ export default class Paper extends React.Component<PaperProps, any> {
                 </li>
               </ul>
               <ul className="Header__to-ranking">
-                <img src="assets/images/cup.png" className="Header__cup-pic" />
+                <img src="/assets/images/cup.png" className="Header__cup-pic" />
                 查看榜单
               </ul>
             </div>

@@ -100,12 +100,12 @@ class Rank extends React.Component<RankProps, any> {
             backgroundColor: activity.primary_color
           }}
         >
-          <img src="assets/images/background.png" />
+          <img src="/assets/images/background.png" />
         </div>
         <div className="Charts__content-wrap">
           <div>
             <div className="Charts__model-wrap">
-              <img src="assets/images/star.png" className="Charts__model" />
+              <img src="/assets/images/star.png" className="Charts__model" />
               <span className="Charts__circle-tool Charts__circle1" />
               <span className="Charts__show-add">+</span>
               <span className="Charts__circle-tool Charts__circle2" />

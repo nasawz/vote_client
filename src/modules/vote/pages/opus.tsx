@@ -328,8 +328,8 @@ class Opus extends React.Component<OpusProps, any> {
                 <img
                   src={
                     pubResult == 'succ'
-                      ? 'assets/images/join_succ.png'
-                      : 'assets/images/vote_fail.png'
+                      ? '/assets/images/join_succ.png'
+                      : '/assets/images/vote_fail.png'
                   }
                   className="PubConfirm__success-image"
                 />

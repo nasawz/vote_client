@@ -104,7 +104,7 @@ export default class Detail extends React.Component<DetailProps, any> {
                 <i className="k-i-close-o" />
               </div>
               <div className="Alert__success-pic">
-                <img src="assets/vote_fail.png" className="Alert__success-image" />
+                <img src="/assets/vote_fail.png" className="Alert__success-image" />
               </div>
               <div className="Alert__remind-text">
                 <pre className="Alert__remind">投票失败</pre>

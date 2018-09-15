@@ -9,13 +9,13 @@ export default class RankBtn extends React.Component<RankBtnProps, any> {
   renderRankNum() {
     let { activity, rank } = this.props;
     if (rank.rank == 1) {
-      return <img src="assets/images/rank_1.png" />;
+      return <img src="/assets/images/rank_1.png" />;
     }
     if (rank.rank == 2) {
-      return <img src="assets/images/rank_2.png" />;
+      return <img src="/assets/images/rank_2.png" />;
     }
     if (rank.rank == 3) {
-      return <img src="assets/images/rank_3.png" />;
+      return <img src="/assets/images/rank_3.png" />;
     }
     return (
       <div

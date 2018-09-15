@@ -1,1 +1,3 @@
 node_modules
+.ftppass
+deploy-config.js

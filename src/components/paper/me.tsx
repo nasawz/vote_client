@@ -23,7 +23,7 @@ export default class Me extends React.Component<MeProps, any> {
                 <div className="signUpInformation__info-pic">
                   <img src="" className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num">3</span>
-                  <img src="assets/images/pic.png" className="signUpInformation__icon" />
+                  <img src="/assets/images/pic.png" className="signUpInformation__icon" />
                 </div>
                 <div className="signUpInformation__information">
                   <p className="signUpInformation__name">名称: sfdasdf</p>

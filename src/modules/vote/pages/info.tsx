@@ -60,7 +60,7 @@ class Info extends React.Component<InfoProps, any> {
     window._wxData = {
       wxtitle: `快来为 ${vote_item.title} 投票吧！`,
       wxlink: window.location.href,
-      wxdesc: `${activity.title}正在进行中，快来投票吧`,
+      wxdesc: `${activity.title}正在进行中，快来投票吧~`,
       wximgUrl: `${vote_item.pic}-700`
     };
     window.changeWx();
@@ -207,8 +207,8 @@ class Info extends React.Component<InfoProps, any> {
                 <img
                   src={
                     voteRes == 'succ'
-                      ? 'assets/images/join_succ.png'
-                      : 'assets/images/vote_fail.png'
+                      ? '/assets/images/join_succ.png'
+                      : '/assets/images/vote_fail.png'
                   }
                   className="Alert__success-image"
                 />

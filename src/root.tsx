@@ -48,7 +48,7 @@ class Root extends React.Component<RootProps, any> {
     window._wxData = {
       wxtitle: activity.title,
       wxlink: '',
-      wxdesc: `${activity.title}正在进行中，快来投票吧`,
+      wxdesc: `${activity.title}正在进行中，快来投票吧~`,
       wximgUrl: `${activity.kv}-75`
     };
     let result = await getJsConfig(activityId, window.location.href.split('#')[0]);

@@ -144,7 +144,7 @@ export default class Post extends React.Component<PostProps, any> {
                 <span className="PubConfirm__add" /> <span className="PubConfirm__add2" />
               </div>
               <div className="PubConfirm__success-pic">
-                <img src="assets/images/join_succ.png" className="PubConfirm__success-image" />
+                <img src="/assets/images/join_succ.png" className="PubConfirm__success-image" />
               </div>
               <p className="PubConfirm__remind">报名信息已提交成功</p>
               <button

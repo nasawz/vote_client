@@ -37,7 +37,7 @@ export default class List extends React.Component<ListProps, any> {
               <div className="Charts__wrap-bottom">
                 <ul className="Charts__model-ul">
                   <li>
-                    <img src="assets/images/rank_1.png" />
+                    <img src="/assets/images/rank_1.png" />
                     <p className="Charts__model-name Charts__model-name1">aa</p>
                     <p
                       className="Charts__model-num Charts__model-num1"
@@ -47,7 +47,7 @@ export default class List extends React.Component<ListProps, any> {
                     </p>
                   </li>
                   <li>
-                    <img src="assets/images/rank_2.png" />
+                    <img src="/assets/images/rank_2.png" />
                     <p className="Charts__model-name Charts__model-name1">aa</p>
                     <p
                       className="Charts__model-num Charts__model-num1"
@@ -57,7 +57,7 @@ export default class List extends React.Component<ListProps, any> {
                     </p>
                   </li>
                   <li>
-                    <img src="assets/images/rank_3.png" />
+                    <img src="/assets/images/rank_3.png" />
                     <p className="Charts__model-name Charts__model-name1">aa</p>
                     <p
                       className="Charts__model-num Charts__model-num1"
