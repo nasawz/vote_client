@@ -1,5 +1,6 @@
 {
   "name": "vote_client",
+  "title": "投票",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
