@@ -14,6 +14,7 @@ export interface InfoProps {
   date_end;
   addVote;
   activity;
+  clearVoteItem;
 }
 
 class Info extends React.Component<InfoProps, any> {
@@ -61,6 +62,10 @@ class Info extends React.Component<InfoProps, any> {
     this.timer = setInterval(() => {
       this.setState({ time: this.getLeftTime(date_end) });
     }, 1000);
+  }
+  componentWillUnmount() {
+    let { clearVoteItem } = this.props
+    clearVoteItem()
   }
   goHome() {
     this.props.history.push('/vote/list');
@@ -228,8 +233,9 @@ const mapState2Props = (state) => {
   };
 };
 
-const mapDispatch2Props = ({ vote: { getVoteItemAsync, addVoteAsync } }) => ({
+const mapDispatch2Props = ({ vote: { getVoteItemAsync, clearVoteItem, addVoteAsync } }) => ({
   getVoteItem: getVoteItemAsync,
+  clearVoteItem: clearVoteItem,
   addVote: addVoteAsync
 });
 

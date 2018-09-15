@@ -24,7 +24,7 @@ export default class RankBtn extends React.Component<RankBtnProps, any> {
           backgroundColor: activity.primary_color
         }}
       >
-        <span className="Charts__number">4</span>
+        <span className="Charts__number">{rank.rank}</span>
       </div>
     );
   }

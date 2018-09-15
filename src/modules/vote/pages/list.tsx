@@ -34,7 +34,7 @@ class List extends React.Component<ListProps, any> {
       activityId: activity.objectId,
       category: activity.categorys[0],
       pageNum: 0,
-      limit: 4,
+      limit: 10,
       order: {
         key: 'createAt',
         type: 'desc'
@@ -107,6 +107,10 @@ class List extends React.Component<ListProps, any> {
       });
     }
   }
+  componentWillUnmount() {
+    let { clearVoteItems } = this.props
+    clearVoteItems()
+  }
   renderJoinBtn() {
     let { join_rule, join_end, join_start, primary_color } = this.props.activity;
     let { type } = this.props.user;
@@ -177,7 +181,9 @@ class List extends React.Component<ListProps, any> {
       isLoading: true,
       pageNum: this.state.pageNum + 1
     }, () => {
-      this.getVoteItems()
+      setTimeout(() => {
+        this.getVoteItems()
+      }, 1000)
     });
   }
   renderListView() {
@@ -199,7 +205,7 @@ class List extends React.Component<ListProps, any> {
       <ListView
         key={category}
         dataSource={this.state.dataSource}
-        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+        renderFooter={() => (<div style={{ padding: 20, textAlign: 'center' }}>
           {this.state.isLoading ? 'Loading...' : 'Loaded'}
         </div>)}
         renderRow={row}
@@ -209,7 +215,7 @@ class List extends React.Component<ListProps, any> {
         onScroll={() => { console.log('scroll'); }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
-        onEndReachedThreshold={10}
+        onEndReachedThreshold={0}
       />
     )
   }

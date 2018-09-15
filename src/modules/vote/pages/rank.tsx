@@ -8,6 +8,7 @@ import { ListView } from 'antd-mobile';
 export interface RankProps {
   activity: any;
   getRankListAsync: any;
+  clearRankList: any;
   rank_list: any;
   dataSource: any;
 }
@@ -46,7 +47,8 @@ class Rank extends React.Component<RankProps, any> {
       },
       () => {
         // 获取列表数据
-        console.log(this.state.category);
+        this.props.clearRankList();
+        pageIndex = 1;
         this.getData();
       }
     );
@@ -65,7 +67,6 @@ class Rank extends React.Component<RankProps, any> {
     });
   }
   onEndReached = (event) => {
-    console.log('---------');
     // load new data
     // hasMore: from backend data, indicates whether it is the last page, here is false
     if (this.state.isLoading && !this.state.hasMore) {
@@ -75,17 +76,6 @@ class Rank extends React.Component<RankProps, any> {
     this.setState({ isLoading: true });
     pageIndex = pageIndex + 1;
     this.getData();
-    // this.setState({
-    //   dataSource: this.state.dataSource.cloneWithRows(this.rData),
-    //   isLoading: false
-    // });
-    // setTimeout(() => {
-    //   this.rData = { ...this.rData, ...genData(++pageIndex) };
-    //   this.setState({
-    //     dataSource: this.state.dataSource.cloneWithRows(this.rData),
-    //     isLoading: false
-    //   });
-    // }, 1000);
   };
 
   componentWillReceiveProps(nextProps) {
@@ -99,13 +89,9 @@ class Rank extends React.Component<RankProps, any> {
 
   componentDidMount() {
     this.getData();
-    // setTimeout(() => {
-    //   this.rData = this.genData();
-    //   this.setState({
-    //     dataSource: this.state.dataSource.cloneWithRows(this.rData),
-    //     isLoading: false
-    //   });
-    // }, 600);
+  }
+  componentWillUnmount() {
+    this.props.clearRankList();
   }
   renderItem() {
     let { rank_list, activity } = this.props;
@@ -128,13 +114,8 @@ class Rank extends React.Component<RankProps, any> {
         }}
       />
     );
-    let index = 0;
     const row = (rowData, sectionID, rowID) => {
-      if (index == rank_list.length - 1) {
-        index = rank_list.length - 1;
-      }
-      const obj = rank_list[index++];
-      return <RankItem activity={activity} rank={obj} />;
+      return <RankItem activity={activity} rank={rowData} />;
     };
 
     return (
@@ -211,8 +192,9 @@ const mapState2Props = (state) => {
     rank_list: state.vote.rank_list
   };
 };
-const mapDispatch2Props = ({ vote: { getRankListAsync } }) => ({
-  getRankListAsync: getRankListAsync
+const mapDispatch2Props = ({ vote: { getRankListAsync, clearRankList } }) => ({
+  getRankListAsync: getRankListAsync,
+  clearRankList: clearRankList
 });
 
 export default connect(
