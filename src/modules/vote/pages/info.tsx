@@ -28,6 +28,15 @@ class Info extends React.Component<InfoProps, any> {
       failMessage: ''
     };
   }
+  openPic() {
+    if (window.wx) {
+      let { vote_item } = this.props;
+      window.wx.previewImage({
+        current: vote_item.pic,
+        urls: [vote_item.pic]
+      });
+    }
+  }
   getLeftTime(date_end) {
     let t = date_end - Date.now();
     if (t > 0) {
@@ -64,8 +73,8 @@ class Info extends React.Component<InfoProps, any> {
     }, 1000);
   }
   componentWillUnmount() {
-    let { clearVoteItem } = this.props
-    clearVoteItem()
+    let { clearVoteItem } = this.props;
+    clearVoteItem();
   }
   goHome() {
     this.props.history.push('/vote/list');
@@ -132,7 +141,11 @@ class Info extends React.Component<InfoProps, any> {
       <div>
         <div className="Detail__detail-wrap">
           <ul className="Detail__panel">
-            <img src={`${vote_item.pic}-750`} className="Detail__avatar" />
+            <img
+              src={`${vote_item.pic}-750`}
+              className="Detail__avatar"
+              onClick={this.openPic.bind(this)}
+            />
             {/* <div className="Detail__img-swipe">
               <div className="mint-swipe">
                 <div className="mint-swipe-items-wrap">
