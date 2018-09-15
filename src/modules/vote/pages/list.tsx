@@ -42,7 +42,8 @@ class List extends React.Component<ListProps, any> {
       dataSource,
       isLoading: true,
       show: false,
-      voteResult: ''
+      voteResult: '',
+      failMessage: ''
     };
   }
   goOpus() {
@@ -55,19 +56,23 @@ class List extends React.Component<ListProps, any> {
     this.props.history.push(`/vote/info/${data.objectId}`);
   }
   //投票
-  sendVote(id) {
+  async sendVote(id) {
     let { activityId } = this.state
     let { addVote } = this.props
-    addVote({ activityId, id })
-      .then(() => {
-        this.setState({ show: true, voteResult: 'succ' });
-        this.showAlert()
-      })
-      .catch((err) => {
-        this.setState({ show: true, voteResult: 'fail' });
-        this.showAlert()
-      })
+    try {
+      let result = await addVote({ activityId, id });
+      this.setState({
+        voteResult: 'succ'
+      });
+    } catch (error) {
+      this.setState({
+        voteResult: 'fail',
+        failMessage: error.message
+      });
+    }
+    this.showAlert();
   }
+
   showAlert() {
     this.setState({
       show: true
@@ -220,7 +225,7 @@ class List extends React.Component<ListProps, any> {
     )
   }
   public render() {
-    let { category, show, voteResult } = this.state;
+    let { category, show, voteResult, failMessage } = this.state;
     let { activity, children, history } = this.props;
     let { date_start, date_end, join_start, join_end } = activity;
     if (!activity) return <div />;
@@ -228,7 +233,7 @@ class List extends React.Component<ListProps, any> {
     let remind = '投票成功'
     if (voteResult === 'fail') {
       img = "assets/images/vote_fail.png"
-      remind = '投票失败'
+      remind = failMessage
     }
     return (
       <div className="App__pcWrap">
