@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ListView } from 'antd-mobile';
+import { ListView, ActivityIndicator } from 'antd-mobile';
 import Card from '../../../components/Card';
 import Banner from '../../../components/Banner';
 import ActivityTitle from '../../../components/ActivityTitle';
@@ -193,14 +193,12 @@ class List extends React.Component<ListProps, any> {
         pageNum: this.state.pageNum + 1
       },
       () => {
-        setTimeout(() => {
-          this.getVoteItems();
-        }, 1000);
+        this.getVoteItems();
       }
     );
   };
   renderListView() {
-    let { category } = this.state;
+    let { category, isLoading } = this.state;
     let { activity } = this.props;
     const row = (rowData, sectionID, rowID) => {
       return (
@@ -219,8 +217,14 @@ class List extends React.Component<ListProps, any> {
         key={category}
         dataSource={this.state.dataSource}
         renderFooter={() => (
-          <div style={{ padding: 20, textAlign: 'center' }}>
-            {this.state.isLoading ? 'Loading...' : 'Loaded'}
+          <div style={{ padding: 30, textAlign: 'center' }}>
+            {this.state.isLoading ? (
+              <div className="loading-data">
+                <ActivityIndicator text="Loading..." />
+              </div>
+            ) : (
+              'Loaded'
+            )}
           </div>
         )}
         renderRow={row}
@@ -232,7 +236,7 @@ class List extends React.Component<ListProps, any> {
         }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={10}
       />
     );
   }
