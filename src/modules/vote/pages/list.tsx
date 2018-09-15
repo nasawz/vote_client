@@ -51,6 +51,9 @@ class List extends React.Component<ListProps, any> {
   goMe() {
     this.props.history.push(`/vote/me`);
   }
+  goInfo(data) {
+    this.props.history.push(`/vote/info/${data.objectId}`);
+  }
   //投票
   sendVote(id) {
     let { activityId } = this.state
@@ -77,18 +80,20 @@ class List extends React.Component<ListProps, any> {
   }
   clickHandler(category) {
     this.setState({
+      isLoading: true,
       category,
       pageNum: 0
     }, () => {
+      let { clearVoteItems } = this.props
+      clearVoteItems()
       this.getVoteItems()
     });
   }
   fmt() { }
   getVoteItems() {
     let { activityId, category, pageNum, limit, order } = this.state
-    let { getVoteItems, clearVoteItems } = this.props
+    let { getVoteItems } = this.props
     let skip = pageNum * limit
-    clearVoteItems()
     getVoteItems({ activityId, category, skip, limit, order })
   }
   componentDidMount() {
@@ -176,24 +181,9 @@ class List extends React.Component<ListProps, any> {
     });
   }
   renderListView() {
-    let { vote_items, activity } = this.props
-    const separator = (sectionID, rowID) => (
-      <div
-        key={`${sectionID}-${rowID}`}
-        style={{
-          backgroundColor: '#F5F5F9',
-          height: 8,
-          borderTop: '1px solid #ECECED',
-          borderBottom: '1px solid #ECECED',
-        }}
-      />
-    );
-    let index = 0;
-    let vote_items_fix = _.orderBy(vote_items, ['score'], ['desc'])
+    let { category } = this.state
+    let { activity } = this.props
     const row = (rowData, sectionID, rowID) => {
-      // return vote_items_fix.map((item, index) => {
-
-      // })
       return (
         <Card
           key={rowID}
@@ -201,11 +191,13 @@ class List extends React.Component<ListProps, any> {
           sendVote={this.sendVote.bind(this)}
           index={rowID}
           opus={rowData}
+          goInfo={this.goInfo.bind(this)}
         />
       );
     };
     return (
       <ListView
+        key={category}
         dataSource={this.state.dataSource}
         renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
           {this.state.isLoading ? 'Loading...' : 'Loaded'}

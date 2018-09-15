@@ -25,8 +25,8 @@ function startDevServer() {
   /*=============proxy start==============*/
   (() => {
     const proxy_options = {
-      // target: 'http://vote.baleina.cn/',
-      target: 'http://localhost:1337/',
+      target: 'http://vote.baleina.cn/',
+      // target: 'http://localhost:1337/',
       secure: false,
       changeOrigin: true,
       ws: true,
