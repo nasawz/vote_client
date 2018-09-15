@@ -30,8 +30,7 @@ class Rank extends React.Component<RankProps, any> {
     this.state = {
       category: activity.categorys[0],
       // pageIndex: 1,
-      dataSource,
-      isLoading: true
+      dataSource
     };
   }
   genData(pIndex = 0) {
