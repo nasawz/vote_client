@@ -43,6 +43,7 @@ export const getVoteItems = (
   const VoteItem = Parse.Object.extend('vote_item');
   const query = new Parse.Query(VoteItem);
   query.equalTo('activity', activity);
+  query.equalTo('status', 0);
   query.limit(limit);
   query.skip(skip);
   if (category) {
