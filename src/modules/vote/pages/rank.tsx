@@ -147,7 +147,6 @@ class Rank extends React.Component<RankProps, any> {
                   <ListView
                     ref={(el) => (this.lv = el)}
                     dataSource={this.state.dataSource}
-                    renderHeader={() => <span>header</span>}
                     renderFooter={() => (
                       <div style={{ padding: 30, textAlign: 'center' }}>
                         {this.state.isLoading ? (
