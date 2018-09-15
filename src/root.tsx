@@ -31,10 +31,10 @@ class Root extends React.Component<RootProps, any> {
       let auth_url = '';
       // auth_type 0 微信认证 1 企业认证
       if (activity.auth_type == 0) {
-        auth_url = `/api/qywx/auth/${activityId}`;
+        auth_url = `/api/wx/auth/${activityId}`;
       }
       if (activity.auth_type == 1) {
-        auth_url = `/api/wx/auth/${activityId}`;
+        auth_url = `/api/qywx/auth/${activityId}`;
       }
       window.location.href = `${auth_url}?callback=${url}`;
       return;
