@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route, HashRouter as Router } from 'react-router-dom';
 import * as DocumentTitle from 'react-document-title';
 
-import { IQueryItemsParams } from './models/vote';
+import './utils/refreshRem';
 import { getJsConfig } from './api';
 import App from './app';
 

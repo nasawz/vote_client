@@ -254,42 +254,38 @@ class List extends React.Component<ListProps, any> {
       remind = failMessage;
     }
     return (
-      <div className="App__pcWrap">
-        <div className="List__whole">
-          <div className="Header__panel">
-            <Banner img={activity.kv} />
-            <ActivityTitle title={activity.title} />
-            <ActivityTime
-              date_start={date_start}
-              date_end={date_end}
-              join_start={join_start}
-              join_end={join_end}
-            />
-            <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
-            <CountDown
-              join_start={activity.join_start}
-              date_end={activity.date_end}
-              primary_color={activity.primary_color}
-            >
-              {this.renderJoinBtn()}
-            </CountDown>
-            <Category
-              activeKey={category ? category : activity.categorys[0]}
-              categories={activity.categorys}
-              primary_color={activity.primary_color}
-              clickHandler={this.clickHandler.bind(this)}
-            />
-            <RankBtn
-              hander_rank_btn={() => {
-                history.push(`/vote/rank`);
-              }}
-            />
-          </div>
-
-          <div>{this.renderListView()}</div>
+      <div className="List__whole">
+        <div className="Header__panel">
+          <Banner img={activity.kv} />
+          <ActivityTitle title={activity.title} />
+          <ActivityTime
+            date_start={date_start}
+            date_end={date_end}
+            join_start={join_start}
+            join_end={join_end}
+          />
+          <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
+          <CountDown
+            join_start={activity.join_start}
+            date_end={activity.date_end}
+            primary_color={activity.primary_color}
+          >
+            {this.renderJoinBtn()}
+          </CountDown>
+          <Category
+            activeKey={category ? category : activity.categorys[0]}
+            categories={activity.categorys}
+            primary_color={activity.primary_color}
+            clickHandler={this.clickHandler.bind(this)}
+          />
+          <RankBtn
+            hander_rank_btn={() => {
+              history.push(`/vote/rank`);
+            }}
+          />
         </div>
+        <div>{this.renderListView()}</div>
         <Alert show={show} img={img} remind={remind} doClose={this.hideAlert.bind(this)} />
-        {children}
       </div>
     );
   }

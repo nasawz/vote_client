@@ -93,65 +93,63 @@ class Rank extends React.Component<RankProps, any> {
     };
 
     return (
-      <div>
-        <div className="Charts__wrap">
-          <div
-            className="Charts__head-wrap"
-            style={{
-              backgroundColor: activity.primary_color
-            }}
-          >
-            <img src="assets/images/background.png" />
-          </div>
-          <div className="Charts__content-wrap">
-            <div>
-              <div className="Charts__model-wrap">
-                <img src="assets/images/star.png" className="Charts__model" />
-                <span className="Charts__circle-tool Charts__circle1" />
-                <span className="Charts__show-add">+</span>
-                <span className="Charts__circle-tool Charts__circle2" />
-                <span className="Charts__circle-tool Charts__circle3" />
-              </div>
+      <div className="Charts__wrap">
+        <div
+          className="Charts__head-wrap"
+          style={{
+            backgroundColor: activity.primary_color
+          }}
+        >
+          <img src="assets/images/background.png" />
+        </div>
+        <div className="Charts__content-wrap">
+          <div>
+            <div className="Charts__model-wrap">
+              <img src="assets/images/star.png" className="Charts__model" />
+              <span className="Charts__circle-tool Charts__circle1" />
+              <span className="Charts__show-add">+</span>
+              <span className="Charts__circle-tool Charts__circle2" />
+              <span className="Charts__circle-tool Charts__circle3" />
             </div>
-            <div className="Charts__text">
-              {/*<p className="Charts__name">新建投票活动</p>*/}
-              <Category
-                activeKey={category ? category : activity.categorys[0]}
-                categories={activity.categorys}
-                primary_color={activity.primary_color}
-                clickHandler={this.clickHandler.bind(this)}
-              />
-              <div className="Charts__list">
-                <span>名次</span> <span className="Charts__list-name">名称</span>
-                <span className="Charts__list-num">票数</span>
-              </div>
-              <div className="Charts__wrap-bottom">
-                <ul className="Charts__model-ul">
-                  <ListView
-                    ref={(el) => (this.lv = el)}
-                    dataSource={this.state.dataSource}
-                    renderFooter={() => (
-                      <div style={{ padding: 30, textAlign: 'center' }}>
-                        {this.state.isLoading ? (
-                          <div className="loading-data">
-                            <ActivityIndicator size="small" text="加载中..." />
-                          </div>
-                        ) : (
-                          '没有更多了'
-                        )}
-                      </div>
-                    )}
-                    renderRow={row}
-                    className="am-list"
-                    pageSize={4}
-                    useBodyScroll
-                    onScroll={() => {}}
-                    scrollRenderAheadDistance={500}
-                    onEndReached={this.onEndReached}
-                    onEndReachedThreshold={10}
-                  />
-                </ul>
-              </div>
+          </div>
+          <div className="Charts__text">
+            {/*<p className="Charts__name">新建投票活动</p>*/}
+            <Category
+              activeKey={category ? category : activity.categorys[0]}
+              categories={activity.categorys}
+              primary_color={activity.primary_color}
+              clickHandler={this.clickHandler.bind(this)}
+            />
+            <div className="Charts__list">
+              <span>名次</span> <span className="Charts__list-name">名称</span>
+              <span className="Charts__list-num">票数</span>
+            </div>
+            <div className="Charts__wrap-bottom">
+              <ul className="Charts__model-ul">
+                <ListView
+                  ref={(el) => (this.lv = el)}
+                  dataSource={this.state.dataSource}
+                  renderFooter={() => (
+                    <div style={{ padding: 30, textAlign: 'center' }}>
+                      {this.state.isLoading ? (
+                        <div className="loading-data">
+                          <ActivityIndicator size="small" text="加载中..." />
+                        </div>
+                      ) : (
+                        '没有更多了'
+                      )}
+                    </div>
+                  )}
+                  renderRow={row}
+                  className="am-list"
+                  pageSize={4}
+                  useBodyScroll
+                  onScroll={() => {}}
+                  scrollRenderAheadDistance={500}
+                  onEndReached={this.onEndReached}
+                  onEndReachedThreshold={10}
+                />
+              </ul>
             </div>
           </div>
         </div>

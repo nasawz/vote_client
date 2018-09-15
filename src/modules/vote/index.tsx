@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import loadable from 'react-loadable';
+import classnames from 'classnames';
 
 // import AppLayout from '../../components/Layout/AppLayout';
 
@@ -39,10 +40,26 @@ class Page extends React.Component<PageProps, any> {
   componentWillMount() {
     // this.props.changeLayout('1');
   }
+  isMobile() {
+    if (
+      navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   public render() {
     let { match } = this.props;
+    let isMobile = this.isMobile();
+    let cls = {
+      App__pcWrap: !isMobile,
+      'App__mobile-wrap': isMobile
+    };
     return (
-      <div>
+      <div className={classnames(cls)}>
         <Route path={`${match.url}/list`} component={List} />
         <Route path={`${match.url}/info/:id`} component={Info} />
         <Route path={`${match.url}/opus`} component={Opus} />
