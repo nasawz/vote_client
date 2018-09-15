@@ -20,6 +20,8 @@ export interface ListProps {
   getVoteItems;
   clearVoteItems;
   addVote;
+  curr_category;
+  setCategory;
 }
 
 class List extends React.Component<ListProps, any> {
@@ -32,7 +34,6 @@ class List extends React.Component<ListProps, any> {
     });
     this.state = {
       activityId: activity.objectId,
-      category: activity.categorys[0],
       pageNum: 0,
       limit: 10,
       order: {
@@ -86,10 +87,10 @@ class List extends React.Component<ListProps, any> {
     });
   }
   clickHandler(category) {
+    this.props.setCategory(category);
     this.setState(
       {
         isLoading: true,
-        category,
         pageNum: 0
       },
       () => {
@@ -101,10 +102,10 @@ class List extends React.Component<ListProps, any> {
   }
   fmt() {}
   getVoteItems() {
-    let { activityId, category, pageNum, limit, order } = this.state;
-    let { getVoteItems } = this.props;
+    let { activityId, pageNum, limit, order } = this.state;
+    let { getVoteItems, curr_category } = this.props;
     let skip = pageNum * limit;
-    getVoteItems({ activityId, category, skip, limit, order });
+    getVoteItems({ activityId, category: curr_category, skip, limit, order });
   }
   componentDidMount() {
     this.getVoteItems();
@@ -198,8 +199,9 @@ class List extends React.Component<ListProps, any> {
     );
   };
   renderListView() {
-    let { category, isLoading } = this.state;
-    let { activity } = this.props;
+    let { isLoading } = this.state;
+    let { activity, curr_category } = this.props;
+    let category = curr_category;
     const row = (rowData, sectionID, rowID) => {
       return (
         <Card
@@ -241,8 +243,9 @@ class List extends React.Component<ListProps, any> {
     );
   }
   public render() {
-    let { category, show, voteResult, failMessage } = this.state;
-    let { activity, children, history } = this.props;
+    let { show, voteResult, failMessage } = this.state;
+    let { activity, children, history, curr_category } = this.props;
+    let category = curr_category;
     let { date_start, date_end, join_start, join_end } = activity;
     if (!activity) return <div />;
     let img = 'assets/images/join_succ.png';
@@ -298,13 +301,17 @@ const mapState2Props = (state) => {
     activity: state.activity,
     user: state.user,
     my_vote_item: state.vote.my_vote_item,
-    vote_items: state.vote.vote_items
+    vote_items: state.vote.vote_items,
+    curr_category: state.vote.curr_category
   };
 };
 
-const mapDispatch2Props = ({ vote: { getVoteItemsAsync, clearVoteItems, addVoteAsync } }) => ({
+const mapDispatch2Props = ({
+  vote: { getVoteItemsAsync, clearVoteItems, addVoteAsync, setCategory }
+}) => ({
   getVoteItems: getVoteItemsAsync,
   clearVoteItems: clearVoteItems,
+  setCategory: setCategory,
   addVote: addVoteAsync
 });
 
