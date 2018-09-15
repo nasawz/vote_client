@@ -5,22 +5,35 @@ export interface CardProps {
   opus: any;
   sendVote: any;
   index: any;
-  goInfo: any
+  goInfo: any;
 }
 
 export default class Card extends React.Component<CardProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      score: this.props.opus.score
+    };
+  }
   sendVote(id, e) {
     e.stopPropagation();
     if (this.props.sendVote) {
-      this.props.sendVote(id);
+      this.props.sendVote(id, (succ) => {
+        if (succ) {
+          this.setState({
+            score: this.state.score + 1
+          });
+        }
+      });
     }
   }
   goInfo(data) {
-    let { goInfo } = this.props
-    goInfo && goInfo(data)
+    let { goInfo } = this.props;
+    goInfo && goInfo(data);
   }
   public render() {
     let { primary_color, opus, index } = this.props;
+    let { score } = this.state;
     opus = opus || {};
     return (
       <div className="FlowItem__item List__left-column" onClick={this.goInfo.bind(this, opus)}>
@@ -49,7 +62,7 @@ export default class Card extends React.Component<CardProps, any> {
               color: primary_color
             }}
           >
-            {opus.score}
+            {score}
           </span>
           <span className="FlowItem__vote-num-desc">票</span>
         </div>

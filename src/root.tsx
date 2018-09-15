@@ -42,7 +42,6 @@ class Root extends React.Component<RootProps, any> {
     };
     let result = await getJsConfig(activityId, window.location.href.split('#')[0]);
     let config = result.data;
-    console.log(config);
     this.configShare(config);
   }
   configShare(config) {
