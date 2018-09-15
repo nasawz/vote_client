@@ -10,25 +10,25 @@ import CountDown from '../../../components/CountDown';
 import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
 import Alert from '../../../components/Alert';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 export interface ListProps {
   activity: any;
   user;
   my_vote_item;
   history?;
-  vote_items
-  getVoteItems
-  clearVoteItems
-  addVote
+  vote_items;
+  getVoteItems;
+  clearVoteItems;
+  addVote;
 }
 
 class List extends React.Component<ListProps, any> {
-  flag: any
+  flag: any;
   constructor(props) {
     super(props);
-    let { activity } = this.props
+    let { activity } = this.props;
     const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+      rowHasChanged: (row1, row2) => row1 !== row2
     });
     this.state = {
       activityId: activity.objectId,
@@ -56,19 +56,21 @@ class List extends React.Component<ListProps, any> {
     this.props.history.push(`/vote/info/${data.objectId}`);
   }
   //投票
-  async sendVote(id) {
-    let { activityId } = this.state
-    let { addVote } = this.props
+  async sendVote(id, cb) {
+    let { activityId } = this.state;
+    let { addVote } = this.props;
     try {
       let result = await addVote({ activityId, id });
       this.setState({
         voteResult: 'succ'
       });
+      cb(true);
     } catch (error) {
       this.setState({
         voteResult: 'fail',
         failMessage: error.message
       });
+      cb(false);
     }
     this.showAlert();
   }
@@ -76,33 +78,36 @@ class List extends React.Component<ListProps, any> {
   showAlert() {
     this.setState({
       show: true
-    })
+    });
   }
   hideAlert() {
     this.setState({
       show: false
-    })
-  }
-  clickHandler(category) {
-    this.setState({
-      isLoading: true,
-      category,
-      pageNum: 0
-    }, () => {
-      let { clearVoteItems } = this.props
-      clearVoteItems()
-      this.getVoteItems()
     });
   }
-  fmt() { }
+  clickHandler(category) {
+    this.setState(
+      {
+        isLoading: true,
+        category,
+        pageNum: 0
+      },
+      () => {
+        let { clearVoteItems } = this.props;
+        clearVoteItems();
+        this.getVoteItems();
+      }
+    );
+  }
+  fmt() {}
   getVoteItems() {
-    let { activityId, category, pageNum, limit, order } = this.state
-    let { getVoteItems } = this.props
-    let skip = pageNum * limit
-    getVoteItems({ activityId, category, skip, limit, order })
+    let { activityId, category, pageNum, limit, order } = this.state;
+    let { getVoteItems } = this.props;
+    let skip = pageNum * limit;
+    getVoteItems({ activityId, category, skip, limit, order });
   }
   componentDidMount() {
-    this.getVoteItems()
+    this.getVoteItems();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.vote_items !== this.props.vote_items) {
@@ -113,8 +118,8 @@ class List extends React.Component<ListProps, any> {
     }
   }
   componentWillUnmount() {
-    let { clearVoteItems } = this.props
-    clearVoteItems()
+    let { clearVoteItems } = this.props;
+    clearVoteItems();
   }
   renderJoinBtn() {
     let { join_rule, join_end, join_start, primary_color } = this.props.activity;
@@ -182,18 +187,21 @@ class List extends React.Component<ListProps, any> {
       return;
     }
     console.log('reach end', event);
-    this.setState({
-      isLoading: true,
-      pageNum: this.state.pageNum + 1
-    }, () => {
-      setTimeout(() => {
-        this.getVoteItems()
-      }, 1000)
-    });
-  }
+    this.setState(
+      {
+        isLoading: true,
+        pageNum: this.state.pageNum + 1
+      },
+      () => {
+        setTimeout(() => {
+          this.getVoteItems();
+        }, 1000);
+      }
+    );
+  };
   renderListView() {
-    let { category } = this.state
-    let { activity } = this.props
+    let { category } = this.state;
+    let { activity } = this.props;
     const row = (rowData, sectionID, rowID) => {
       return (
         <Card
@@ -210,30 +218,34 @@ class List extends React.Component<ListProps, any> {
       <ListView
         key={category}
         dataSource={this.state.dataSource}
-        renderFooter={() => (<div style={{ padding: 20, textAlign: 'center' }}>
-          {this.state.isLoading ? 'Loading...' : 'Loaded'}
-        </div>)}
+        renderFooter={() => (
+          <div style={{ padding: 20, textAlign: 'center' }}>
+            {this.state.isLoading ? 'Loading...' : 'Loaded'}
+          </div>
+        )}
         renderRow={row}
         className="am-list"
         pageSize={this.state.limit}
         useBodyScroll
-        onScroll={() => { console.log('scroll'); }}
+        onScroll={() => {
+          console.log('scroll');
+        }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
         onEndReachedThreshold={0}
       />
-    )
+    );
   }
   public render() {
     let { category, show, voteResult, failMessage } = this.state;
     let { activity, children, history } = this.props;
     let { date_start, date_end, join_start, join_end } = activity;
     if (!activity) return <div />;
-    let img = "assets/images/join_succ.png"
-    let remind = '投票成功'
+    let img = 'assets/images/join_succ.png';
+    let remind = '投票成功';
     if (voteResult === 'fail') {
-      img = "assets/images/vote_fail.png"
-      remind = failMessage
+      img = 'assets/images/vote_fail.png';
+      remind = failMessage;
     }
     return (
       <div className="App__pcWrap">
@@ -268,9 +280,7 @@ class List extends React.Component<ListProps, any> {
             />
           </div>
 
-          <div>
-            {this.renderListView()}
-          </div>
+          <div>{this.renderListView()}</div>
         </div>
         <Alert show={show} img={img} remind={remind} doClose={this.hideAlert.bind(this)} />
         {children}
