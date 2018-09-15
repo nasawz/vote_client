@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 export interface CardProps {
-  primary_color: any
+  primary_color: any;
   opus: any;
   sendVote: any;
-  index: any
+  index: any;
 }
 
 export default class Card extends React.Component<CardProps, any> {
@@ -15,12 +15,12 @@ export default class Card extends React.Component<CardProps, any> {
   }
   public render() {
     let { primary_color, opus, index } = this.props;
-    opus = opus || {}
+    opus = opus || {};
     return (
       <div className="FlowItem__item List__left-column">
         <div>
           <div className="" style={{ height: '128px', overflow: 'hidden' }}>
-            {index < 3 && <div
+            <div
               className="FlowItem__num"
               style={{
                 backgroundColor: primary_color,
@@ -28,8 +28,8 @@ export default class Card extends React.Component<CardProps, any> {
               }}
             >
               {parseInt(index) + 1}
-            </div>}
-            <img src={opus.pic} className="FlowItem__avatar" />
+            </div>
+            <img src={`${opus.pic}-700`} className="FlowItem__avatar" />
           </div>
           <div>
             <label className="FlowItem__title">{opus.title}</label>
