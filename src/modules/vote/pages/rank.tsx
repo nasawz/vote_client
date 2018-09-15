@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ActivityIndicator, WingBlank, WhiteSpace, Button } from 'antd-mobile';
-// import Auth from '../../../components/auth';
-// import Paper from '../../../components/paper';
+import { ActivityIndicator } from 'antd-mobile';
 import Category from '../../../components/Category';
 import RankItem from '../../../components/RankItem';
 import { ListView } from 'antd-mobile';
@@ -14,7 +12,6 @@ export interface RankProps {
   dataSource: any;
 }
 
-const NUM_ROWS = 20;
 let pageIndex = 1;
 
 class Rank extends React.Component<RankProps, any> {
@@ -33,14 +30,7 @@ class Rank extends React.Component<RankProps, any> {
       dataSource
     };
   }
-  genData(pIndex = 0) {
-    const dataBlob = {};
-    for (let i = 0; i < NUM_ROWS; i++) {
-      const ii = pIndex * NUM_ROWS + i;
-      dataBlob[`${ii}`] = `row - ${ii}`;
-    }
-    return dataBlob;
-  }
+
   clickHandler(category) {
     this.setState(
       {
@@ -56,7 +46,7 @@ class Rank extends React.Component<RankProps, any> {
   }
   getData() {
     let { activity } = this.props;
-    let limit = 4;
+    let limit = 10;
     let skip = limit * (pageIndex - 1);
     let activityId = activity.objectId;
     let category = this.state.category;
@@ -93,12 +83,6 @@ class Rank extends React.Component<RankProps, any> {
   }
   componentWillUnmount() {
     this.props.clearRankList();
-  }
-  renderItem() {
-    let { rank_list, activity } = this.props;
-    return rank_list.map((rank) => {
-      return <RankItem activity={activity} rank={rank} />;
-    });
   }
 
   public render() {
@@ -167,8 +151,6 @@ class Rank extends React.Component<RankProps, any> {
                     onEndReached={this.onEndReached}
                     onEndReachedThreshold={10}
                   />
-
-                  {/* {this.renderItem()} */}
                 </ul>
               </div>
             </div>
