@@ -23,11 +23,22 @@ class Root extends React.Component<RootProps, any> {
   async componentWillMount() {
     let { pathname } = window.location;
     let user = await this.props.getUserAsync();
-    if (!user) {
-      // TODO go login
-    }
+
     let activityId = pathname.replace(/\//g, '');
     let activity = await this.props.getActivityData(activityId);
+    if (!user) {
+      let url = window.location.href;
+      let auth_url = '';
+      // auth_type 0 微信认证 1 企业认证
+      if (activity.auth_type == 0) {
+        auth_url = `/api/qywx/auth/${activityId}`;
+      }
+      if (activity.auth_type == 1) {
+        auth_url = `/api/wx/auth/${activityId}`;
+      }
+      window.location.href = `${auth_url}?callback=${url}`;
+      return;
+    }
     let { categorys } = activity;
     if (categorys && categorys.length > 0) {
       this.props.setCategory(categorys[0]);
