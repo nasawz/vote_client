@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { ActivityIndicator, WingBlank, WhiteSpace, Button } from 'antd-mobile';
 // import Auth from '../../../components/auth';
 // import Paper from '../../../components/paper';
 import Category from '../../../components/Category';
@@ -149,7 +150,13 @@ class Rank extends React.Component<RankProps, any> {
                     renderHeader={() => <span>header</span>}
                     renderFooter={() => (
                       <div style={{ padding: 30, textAlign: 'center' }}>
-                        {this.state.isLoading ? 'Loading...' : 'Loaded'}
+                        {this.state.isLoading ? (
+                          <div className="loading-data">
+                            <ActivityIndicator size="small" text="Loading..." />
+                          </div>
+                        ) : (
+                          'Loaded'
+                        )}
                       </div>
                     )}
                     renderRow={row}
