@@ -5,19 +5,25 @@ export interface CardProps {
   opus: any;
   sendVote: any;
   index: any;
+  goInfo: any
 }
 
 export default class Card extends React.Component<CardProps, any> {
-  sendVote(id) {
+  sendVote(id, e) {
+    e.stopPropagation();
     if (this.props.sendVote) {
       this.props.sendVote(id);
     }
+  }
+  goInfo(data) {
+    let { goInfo } = this.props
+    goInfo && goInfo(data)
   }
   public render() {
     let { primary_color, opus, index } = this.props;
     opus = opus || {};
     return (
-      <div className="FlowItem__item List__left-column">
+      <div className="FlowItem__item List__left-column" onClick={this.goInfo.bind(this, opus)}>
         <div>
           <div className="" style={{ height: '128px', overflow: 'hidden' }}>
             <div
