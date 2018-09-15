@@ -63,7 +63,6 @@ class Rank extends React.Component<RankProps, any> {
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
-    console.log('reach end', event);
     this.setState({ isLoading: true });
     pageIndex = pageIndex + 1;
     this.getData();
@@ -135,10 +134,10 @@ class Rank extends React.Component<RankProps, any> {
                       <div style={{ padding: 30, textAlign: 'center' }}>
                         {this.state.isLoading ? (
                           <div className="loading-data">
-                            <ActivityIndicator size="small" text="Loading..." />
+                            <ActivityIndicator size="small" text="加载中..." />
                           </div>
                         ) : (
-                          'Loaded'
+                          '没有更多了'
                         )}
                       </div>
                     )}

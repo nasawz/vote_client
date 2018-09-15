@@ -187,7 +187,6 @@ class List extends React.Component<ListProps, any> {
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
-    console.log('reach end', event);
     this.setState(
       {
         isLoading: true,
@@ -222,10 +221,10 @@ class List extends React.Component<ListProps, any> {
           <div style={{ padding: 30, textAlign: 'center' }}>
             {this.state.isLoading ? (
               <div className="loading-data">
-                <ActivityIndicator text="Loading..." />
+                <ActivityIndicator text="加载中..." />
               </div>
             ) : (
-              'Loaded'
+              '没有更多了'
             )}
           </div>
         )}
@@ -234,7 +233,7 @@ class List extends React.Component<ListProps, any> {
         pageSize={this.state.limit}
         useBodyScroll
         onScroll={() => {
-          console.log('scroll');
+          // console.log('scroll');
         }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
