@@ -34,6 +34,7 @@ export const vote = {
     curr_category: '',
     vote_items: [],
     vote_items_skip: 0,
+    vote_items_pageNum: 0,
     my_vote_item: null,
     rank_list: [],
     rank_list_skip: 0
@@ -54,11 +55,24 @@ export const vote = {
       });
       return Object.assign({}, state, { vote_items: _.concat(state.vote_items, items) });
     },
+    replaceVoteItems(state, payload) {
+      let items = _.map(payload, (item) => {
+        return item.toJSON();
+      });
+      return Object.assign({}, state, { vote_items: items });
+    },
     setVoteItemsSkip(state, payload) {
       return Object.assign({}, state, { vote_items_skip: payload });
     },
+    setVoteItemsPageNum(state, payload) {
+      return Object.assign({}, state, { vote_items_pageNum: payload });
+    },
     clearVoteItems(state, payload) {
-      return Object.assign({}, state, { vote_items: [], vote_items_skip: 0 });
+      return Object.assign({}, state, {
+        vote_items: [],
+        vote_items_skip: 0,
+        vote_items_pageNum: 0
+      });
     },
     setMyVoteItem(state, payload) {
       return Object.assign({}, state, { my_vote_item: payload });
@@ -122,6 +136,26 @@ export const vote = {
           params.category
         );
         dispatch.vote.setVoteItems(items);
+        return items;
+      } catch (error) {
+        return null;
+      }
+    },
+    /**
+     * 获取并替换投票列表
+     * @param params
+     * @param rootState
+     */
+    async getVoteItemsAndReplaceAsync(params: IQueryItemsParams, rootState) {
+      try {
+        let items = await getVoteItems(
+          params.activityId,
+          params.limit,
+          params.skip,
+          params.order,
+          params.category
+        );
+        dispatch.vote.replaceVoteItems(items);
         return items;
       } catch (error) {
         return null;

@@ -22,6 +22,9 @@ export interface ListProps {
   addVote;
   curr_category;
   setCategory;
+  setVoteItemsPageNum;
+  replaceVoteItems;
+  pageNum;
 }
 
 class List extends React.Component<ListProps, any> {
@@ -34,7 +37,6 @@ class List extends React.Component<ListProps, any> {
     });
     this.state = {
       activityId: activity.objectId,
-      pageNum: 0,
       limit: 10,
       order: {
         key: 'createAt',
@@ -88,27 +90,42 @@ class List extends React.Component<ListProps, any> {
   }
   clickHandler(category) {
     this.props.setCategory(category);
+    this.props.setVoteItemsPageNum(0);
     this.setState(
       {
-        isLoading: true,
-        pageNum: 0
+        isLoading: true
       },
       () => {
-        let { clearVoteItems } = this.props;
-        clearVoteItems();
-        this.getVoteItems();
+        this.replaceVoteItems();
+        // let { clearVoteItems } = this.props;
+        // clearVoteItems();
+        // this.getVoteItems();
       }
     );
   }
   fmt() {}
+  replaceVoteItems() {
+    let { activityId, limit, order } = this.state;
+    let { replaceVoteItems, curr_category, pageNum } = this.props;
+    let skip = pageNum * limit;
+    replaceVoteItems({ activityId, category: curr_category, skip, limit, order });
+  }
   getVoteItems() {
-    let { activityId, pageNum, limit, order } = this.state;
-    let { getVoteItems, curr_category } = this.props;
+    let { activityId, limit, order } = this.state;
+    let { getVoteItems, curr_category, pageNum } = this.props;
     let skip = pageNum * limit;
     getVoteItems({ activityId, category: curr_category, skip, limit, order });
   }
   componentDidMount() {
-    this.getVoteItems();
+    let { vote_items } = this.props;
+    if (vote_items.length == 0) {
+      this.getVoteItems();
+    } else {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(vote_items),
+        isLoading: false
+      });
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.vote_items !== this.props.vote_items) {
@@ -119,8 +136,8 @@ class List extends React.Component<ListProps, any> {
     }
   }
   componentWillUnmount() {
-    let { clearVoteItems } = this.props;
-    clearVoteItems();
+    // let { clearVoteItems } = this.props;
+    // clearVoteItems();
   }
   renderJoinBtn() {
     let { join_rule, join_end, join_start, primary_color } = this.props.activity;
@@ -187,10 +204,11 @@ class List extends React.Component<ListProps, any> {
     if (this.state.isLoading && !this.state.hasMore) {
       return;
     }
+    let { pageNum } = this.props;
+    this.props.setVoteItemsPageNum(pageNum + 1);
     this.setState(
       {
-        isLoading: true,
-        pageNum: this.state.pageNum + 1
+        isLoading: true
       },
       () => {
         this.getVoteItems();
@@ -297,17 +315,27 @@ const mapState2Props = (state) => {
     user: state.user,
     my_vote_item: state.vote.my_vote_item,
     vote_items: state.vote.vote_items,
-    curr_category: state.vote.curr_category
+    curr_category: state.vote.curr_category,
+    pageNum: state.vote.vote_items_pageNum
   };
 };
 
 const mapDispatch2Props = ({
-  vote: { getVoteItemsAsync, clearVoteItems, addVoteAsync, setCategory }
+  vote: {
+    getVoteItemsAsync,
+    getVoteItemsAndReplaceAsync,
+    clearVoteItems,
+    addVoteAsync,
+    setCategory,
+    setVoteItemsPageNum
+  }
 }) => ({
   getVoteItems: getVoteItemsAsync,
+  replaceVoteItems: getVoteItemsAndReplaceAsync,
   clearVoteItems: clearVoteItems,
   setCategory: setCategory,
-  addVote: addVoteAsync
+  addVote: addVoteAsync,
+  setVoteItemsPageNum: setVoteItemsPageNum
 });
 
 export default connect(
