@@ -23,8 +23,10 @@ export interface ListProps {
   curr_category;
   setCategory;
   setVoteItemsPageNum;
+  setVoteItemsYOffset;
   replaceVoteItems;
   pageNum;
+  yOffset;
 }
 
 class List extends React.Component<ListProps, any> {
@@ -117,7 +119,7 @@ class List extends React.Component<ListProps, any> {
     getVoteItems({ activityId, category: curr_category, skip, limit, order });
   }
   componentDidMount() {
-    let { vote_items } = this.props;
+    let { vote_items, yOffset } = this.props;
     if (vote_items.length == 0) {
       this.getVoteItems();
     } else {
@@ -125,6 +127,10 @@ class List extends React.Component<ListProps, any> {
         dataSource: this.state.dataSource.cloneWithRows(vote_items),
         isLoading: false
       });
+      setTimeout(() => {
+        let listView: any = this.refs['item_list'];
+        listView.scrollTo(0, yOffset);
+      }, 100);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -136,8 +142,8 @@ class List extends React.Component<ListProps, any> {
     }
   }
   componentWillUnmount() {
-    // let { clearVoteItems } = this.props;
-    // clearVoteItems();
+    let { setVoteItemsYOffset } = this.props;
+    setVoteItemsYOffset(window.pageYOffset);
   }
   renderJoinBtn() {
     let { join_rule, join_end, join_start, primary_color } = this.props.activity;
@@ -233,6 +239,7 @@ class List extends React.Component<ListProps, any> {
     };
     return (
       <ListView
+        ref="item_list"
         key={category}
         dataSource={this.state.dataSource}
         renderFooter={() => (
@@ -250,9 +257,6 @@ class List extends React.Component<ListProps, any> {
         className="am-list"
         pageSize={this.state.limit}
         useBodyScroll
-        onScroll={() => {
-          // console.log('scroll');
-        }}
         scrollRenderAheadDistance={500}
         onEndReached={this.onEndReached}
         onEndReachedThreshold={10}
@@ -316,7 +320,8 @@ const mapState2Props = (state) => {
     my_vote_item: state.vote.my_vote_item,
     vote_items: state.vote.vote_items,
     curr_category: state.vote.curr_category,
-    pageNum: state.vote.vote_items_pageNum
+    pageNum: state.vote.vote_items_pageNum,
+    yOffset: state.vote.vote_items_YOffset
   };
 };
 
@@ -327,7 +332,8 @@ const mapDispatch2Props = ({
     clearVoteItems,
     addVoteAsync,
     setCategory,
-    setVoteItemsPageNum
+    setVoteItemsPageNum,
+    setVoteItemsYOffset
   }
 }) => ({
   getVoteItems: getVoteItemsAsync,
@@ -335,7 +341,8 @@ const mapDispatch2Props = ({
   clearVoteItems: clearVoteItems,
   setCategory: setCategory,
   addVote: addVoteAsync,
-  setVoteItemsPageNum: setVoteItemsPageNum
+  setVoteItemsPageNum: setVoteItemsPageNum,
+  setVoteItemsYOffset: setVoteItemsYOffset
 });
 
 export default connect(

@@ -35,6 +35,7 @@ export const vote = {
     vote_items: [],
     vote_items_skip: 0,
     vote_items_pageNum: 0,
+    vote_items_YOffset: 0,
     my_vote_item: null,
     rank_list: [],
     rank_list_skip: 0
@@ -67,11 +68,15 @@ export const vote = {
     setVoteItemsPageNum(state, payload) {
       return Object.assign({}, state, { vote_items_pageNum: payload });
     },
+    setVoteItemsYOffset(state, payload) {
+      return Object.assign({}, state, { vote_items_YOffset: payload });
+    },
     clearVoteItems(state, payload) {
       return Object.assign({}, state, {
         vote_items: [],
         vote_items_skip: 0,
-        vote_items_pageNum: 0
+        vote_items_pageNum: 0,
+        vote_items_YOffset: 0
       });
     },
     setMyVoteItem(state, payload) {
