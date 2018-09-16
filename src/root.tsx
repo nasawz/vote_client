@@ -27,7 +27,7 @@ class Root extends React.Component<RootProps, any> {
     let activityId = pathname.replace(/\//g, '');
     let activity = await this.props.getActivityData(activityId);
     if (!user) {
-      let url = window.location.href;
+      let url = encodeURIComponent(window.location.href);
       let auth_url = '';
       // auth_type 0 微信认证 1 企业认证
       if (activity.auth_type == 0) {
