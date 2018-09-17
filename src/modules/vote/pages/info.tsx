@@ -58,7 +58,7 @@ class Info extends React.Component<InfoProps, any> {
     let { activityId, activity } = this.props;
     let vote_item = await this.props.getVoteItem({ activityId, id });
     window._wxData = {
-      wxtitle: `快来为 ${vote_item.title} 投票吧！`,
+      wxtitle: `快来为《${vote_item.title}》投票吧！`,
       wxlink: window.location.href,
       wxdesc: `${activity.title}正在进行中，快来投票吧~`,
       wximgUrl: `${vote_item.pic}-700`
