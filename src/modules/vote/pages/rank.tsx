@@ -10,6 +10,7 @@ export interface RankProps {
   clearRankList: any;
   rank_list: any;
   dataSource: any;
+  history;
 }
 
 let pageIndex = 1;
@@ -83,13 +84,15 @@ class Rank extends React.Component<RankProps, any> {
   componentWillUnmount() {
     this.props.clearRankList();
   }
-
+  goInfo(data) {
+    this.props.history.push(`/vote/info/${data.objectId}`);
+  }
   public render() {
     let { category } = this.state;
     let { activity, rank_list } = this.props;
 
     const row = (rowData, sectionID, rowID) => {
-      return <RankItem activity={activity} rank={rowData} />;
+      return <RankItem goInfo={this.goInfo.bind(this)} activity={activity} rank={rowData} />;
     };
 
     return (
