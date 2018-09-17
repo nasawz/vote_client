@@ -3,9 +3,14 @@ import * as React from 'react';
 export interface RankBtnProps {
   activity: any;
   rank: any;
+  goInfo;
 }
 
 export default class RankBtn extends React.Component<RankBtnProps, any> {
+  goInfo() {
+    let { rank } = this.props;
+    this.props.goInfo(rank);
+  }
   renderRankNum() {
     let { activity, rank } = this.props;
     if (rank.rank == 1) {
@@ -32,7 +37,7 @@ export default class RankBtn extends React.Component<RankBtnProps, any> {
     let { activity, rank } = this.props;
     if (!rank) return <div />;
     return (
-      <li>
+      <li onClick={this.goInfo.bind(this)}>
         {this.renderRankNum()}
         <p className="Charts__model-name Charts__model-name1">{rank.title}</p>
         <p
