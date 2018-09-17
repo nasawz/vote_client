@@ -207,7 +207,7 @@ class Info extends React.Component<InfoProps, any> {
                 <img
                   src={
                     voteRes == 'succ'
-                      ? '/assets/images/join_succ.png'
+                      ? '/assets/images/vote_succ.png'
                       : '/assets/images/vote_fail.png'
                   }
                   className="Alert__success-image"

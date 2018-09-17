@@ -202,7 +202,6 @@ class Opus extends React.Component<OpusProps, any> {
                   <div className="PubImgUpload__camera-wrap">
                     <i className="k-i-camera PubImgUpload__camera" />
                     <p className="PubImgUpload__pic-txt">上传图片</p>
-                    <p className="PubImgUpload__pic-txt">(最多1张)</p>
                   </div>
                   {!imgUrl && (
                     <input
@@ -329,7 +328,7 @@ class Opus extends React.Component<OpusProps, any> {
                   src={
                     pubResult == 'succ'
                       ? '/assets/images/join_succ.png'
-                      : '/assets/images/vote_fail.png'
+                      : '/assets/images/join_fail.png'
                   }
                   className="PubConfirm__success-image"
                 />
