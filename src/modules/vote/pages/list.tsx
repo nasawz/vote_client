@@ -289,13 +289,17 @@ class List extends React.Component<ListProps, any> {
       <div className="List__whole">
         <div className="Header__panel">
           <Banner img={activity.kv} />
-          <ActivityTitle title={activity.title} />
-          <ActivityTime
-            date_start={date_start}
-            date_end={date_end}
-            join_start={join_start}
-            join_end={join_end}
-          />
+          {activity.show_title ? <ActivityTitle title={activity.title} /> : ''}
+          {activity.show_time ? (
+            <ActivityTime
+              date_start={date_start}
+              date_end={date_end}
+              join_start={join_start}
+              join_end={join_end}
+            />
+          ) : (
+            ''
+          )}
           <ActivityIntro desc={activity.desc} primary_color={activity.primary_color} />
           <CountDown
             join_start={activity.join_start}
