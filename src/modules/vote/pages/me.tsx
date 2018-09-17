@@ -51,9 +51,16 @@ class Me extends React.Component<MeProps, any> {
           <div className="MySignUp__split">
             <div className="signUpInformation__info-wrap">
               <div className="signUpInformation__signup-info">报名信息</div>
-              <div className="signUpInformation__detail" onClick={this.goInfo.bind(this)}>
-                <div className="signUpInformation__info-pic">
-                  <img src={my_vote_item.pic} className="signUpInformation__pic" />
+              <div
+                className="signUpInformation__detail"
+                onClick={this.goInfo.bind(this)}
+                style={{ marginBottom: '3rem' }}
+              >
+                <div>
+                  <img src={`${my_vote_item.pic}-720`} style={{ width: '100%' }} />
+                </div>
+                <div className="signUpInformation__info-pic" style={{ display: 'none' }}>
+                  <img src={`${my_vote_item.pic}`} className="signUpInformation__pic" />
                   <span className="signUpInformation__pic-num" />
                   <img src="/assets/images/pic.png" className="signUpInformation__icon" />
                 </div>
