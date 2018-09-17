@@ -97,7 +97,8 @@ class Opus extends React.Component<OpusProps, any> {
     this.setState({ showPubRemindModal: true });
   }
   goBack() {
-    this.props.history.goBack();
+    let { category } = this.state;
+    this.props.history.replace(`/vote/list?reload=true&category=${category}`);
   }
   async onConfirm() {
     let { title, desc, category, imgUrl, loading } = this.state;

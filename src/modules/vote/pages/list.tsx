@@ -11,6 +11,8 @@ import RankBtn from '../../../components/RankBtn';
 import Category from '../../../components/Category';
 import Alert from '../../../components/Alert';
 import * as _ from 'lodash';
+import { getQueryParams } from '../../../utils/query-parser';
+
 export interface ListProps {
   activity: any;
   user;
@@ -27,6 +29,7 @@ export interface ListProps {
   replaceVoteItems;
   pageNum;
   yOffset;
+  location;
 }
 
 class List extends React.Component<ListProps, any> {
@@ -139,6 +142,13 @@ class List extends React.Component<ListProps, any> {
         dataSource: this.state.dataSource.cloneWithRows(nextProps.vote_items),
         isLoading: false
       });
+    }
+  }
+  componentWillMount() {
+    let queryParams: any = getQueryParams(this.props.location.search);
+    if (queryParams.reload == 'true') {
+      this.props.setCategory(queryParams.category);
+      this.replaceVoteItems();
     }
   }
   componentWillUnmount() {
@@ -294,16 +304,16 @@ class List extends React.Component<ListProps, any> {
           >
             {this.renderJoinBtn()}
           </CountDown>
+          <RankBtn
+            hander_rank_btn={() => {
+              history.push(`/vote/rank`);
+            }}
+          />
           <Category
             activeKey={category ? category : activity.categorys[0]}
             categories={activity.categorys}
             primary_color={activity.primary_color}
             clickHandler={this.clickHandler.bind(this)}
-          />
-          <RankBtn
-            hander_rank_btn={() => {
-              history.push(`/vote/rank`);
-            }}
           />
         </div>
         <div>{this.renderListView()}</div>
