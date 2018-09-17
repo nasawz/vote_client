@@ -142,7 +142,7 @@ class Info extends React.Component<InfoProps, any> {
         <div className="Detail__detail-wrap">
           <ul className="Detail__panel">
             <img
-              src={`${vote_item.pic}-750`}
+              src={`${vote_item.pic}-720`}
               className="Detail__avatar"
               onClick={this.openPic.bind(this)}
             />
