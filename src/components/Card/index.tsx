@@ -12,7 +12,7 @@ export default class Card extends React.Component<CardProps, any> {
   constructor(props) {
     super(props);
     this.state = {
-      score: this.props.opus.score
+      score: props.opus.score
     };
   }
   sendVote(id, e) {
@@ -26,6 +26,11 @@ export default class Card extends React.Component<CardProps, any> {
         }
       });
     }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.state = {
+      score: nextProps.opus.score
+    };
   }
   goInfo(data) {
     let { goInfo } = this.props;

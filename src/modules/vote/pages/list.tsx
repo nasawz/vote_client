@@ -34,12 +34,15 @@ export interface ListProps {
 
 class List extends React.Component<ListProps, any> {
   flag: any;
+  isLoading;
+  disable_load: [];
   constructor(props) {
     super(props);
     let { activity } = this.props;
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2
     });
+    this.isLoading = false;
     this.state = {
       activityId: activity.objectId,
       limit: 10,
@@ -93,33 +96,36 @@ class List extends React.Component<ListProps, any> {
       show: false
     });
   }
-  clickHandler(category) {
-    this.props.setCategory(category);
-    this.props.setVoteItemsPageNum(0);
-    this.setState(
-      {
-        isLoading: true
-      },
-      () => {
-        this.replaceVoteItems();
-        // let { clearVoteItems } = this.props;
-        // clearVoteItems();
-        // this.getVoteItems();
-      }
-    );
+  async clickHandler(category) {
+    await this.props.setCategory(category);
+    await this.props.setVoteItemsPageNum(0);
+    this.replaceVoteItems();
   }
   fmt() {}
   replaceVoteItems() {
     let { activityId, limit, order } = this.state;
     let { replaceVoteItems, curr_category, pageNum } = this.props;
     let skip = pageNum * limit;
-    replaceVoteItems({ activityId, category: curr_category, skip, limit, order });
+    if (!this.isLoading) {
+      this.setState({ isLoading: true });
+      this.isLoading = true;
+      replaceVoteItems({ activityId, category: curr_category, skip, limit, order });
+    }
   }
-  getVoteItems() {
+  async getVoteItems() {
     let { activityId, limit, order } = this.state;
     let { getVoteItems, curr_category, pageNum } = this.props;
-    let skip = pageNum * limit;
-    getVoteItems({ activityId, category: curr_category, skip, limit, order });
+    if (_.indexOf(this.disable_load, curr_category) == -1 && !this.isLoading) {
+      this.isLoading = true;
+      let skip = pageNum * limit;
+      this.setState({
+        isLoading: true
+      });
+      let items = await getVoteItems({ activityId, category: curr_category, skip, limit, order });
+      if (items.length == 0) {
+        this.disable_load = _.union(this.disable_load, [curr_category]);
+      }
+    }
   }
   componentDidMount() {
     let { vote_items, yOffset } = this.props;
@@ -130,6 +136,7 @@ class List extends React.Component<ListProps, any> {
         dataSource: this.state.dataSource.cloneWithRows(vote_items),
         isLoading: false
       });
+      this.isLoading = false;
       setTimeout(() => {
         let listView: any = this.refs['item_list'];
         listView.scrollTo(0, yOffset);
@@ -142,12 +149,14 @@ class List extends React.Component<ListProps, any> {
         dataSource: this.state.dataSource.cloneWithRows(nextProps.vote_items),
         isLoading: false
       });
+      this.isLoading = false;
     }
   }
-  componentWillMount() {
+  async componentWillMount() {
     let queryParams: any = getQueryParams(this.props.location.search);
     if (queryParams.reload == 'true') {
-      this.props.setCategory(queryParams.category);
+      await this.props.setVoteItemsPageNum(0);
+      await this.props.setCategory(queryParams.category);
       this.replaceVoteItems();
     }
   }
@@ -222,14 +231,7 @@ class List extends React.Component<ListProps, any> {
     }
     let { pageNum } = this.props;
     this.props.setVoteItemsPageNum(pageNum + 1);
-    this.setState(
-      {
-        isLoading: true
-      },
-      () => {
-        this.getVoteItems();
-      }
-    );
+    this.getVoteItems();
   };
   renderListView() {
     let { isLoading } = this.state;
@@ -254,7 +256,7 @@ class List extends React.Component<ListProps, any> {
         dataSource={this.state.dataSource}
         renderFooter={() => (
           <div style={{ padding: 30, textAlign: 'center' }}>
-            {this.state.isLoading ? (
+            {isLoading ? (
               <div className="loading-data">
                 <ActivityIndicator text="加载中..." />
               </div>
