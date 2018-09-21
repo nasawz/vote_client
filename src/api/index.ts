@@ -38,7 +38,7 @@ export const getVoteItems = (
   activityId,
   limit = 10,
   skip = 0,
-  order: IOrder = { key: 'createAt', type: 'desc' },
+  order: IOrder = { key: 'createdAt', type: 'desc' },
   category = null
 ) => {
   const Activity = Parse.Object.extend('activity');

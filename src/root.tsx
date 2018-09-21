@@ -157,13 +157,12 @@ window.changeWx = () => {
       if (window.shareSuccess) {
         window.shareSuccess();
       }
-    },
-    cancel: function() {},
-    fail: function() {
       try {
         sendAnalysisShare();
       } catch (error) {}
-    }
+    },
+    cancel: function() {},
+    fail: function() {}
   });
 
   window.wx.onMenuShareTimeline({
@@ -175,13 +174,12 @@ window.changeWx = () => {
       if (window.shareSuccess) {
         window.shareSuccess();
       }
-    },
-    cancel: function() {},
-    fail: function() {
       try {
         sendAnalysisShare();
       } catch (error) {}
-    }
+    },
+    cancel: function() {},
+    fail: function() {}
   });
 };
 const mapDispatch2Props = ({

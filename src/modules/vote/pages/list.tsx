@@ -47,7 +47,7 @@ class List extends React.Component<ListProps, any> {
       activityId: activity.objectId,
       limit: 10,
       order: {
-        key: 'createAt',
+        key: 'createdAt',
         type: 'desc'
       },
       dataSource,
