@@ -60,7 +60,7 @@ class Info extends React.Component<InfoProps, any> {
     window._wxData = {
       wxtitle: `快来为《${vote_item.title}》投票吧！`,
       wxlink: window.location.href,
-      wxdesc: `${activity.title}正在进行中，快来投票吧~`,
+      wxdesc: activity.share_desc,
       wximgUrl: `${vote_item.pic}-700`
     };
     window.changeWx();
