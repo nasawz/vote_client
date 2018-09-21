@@ -4,7 +4,7 @@ import { Route, HashRouter as Router } from 'react-router-dom';
 import * as DocumentTitle from 'react-document-title';
 
 import './utils/refreshRem';
-import { getJsConfig } from './api';
+import { getJsConfig, analysisShare } from './api';
 import App from './app';
 
 declare let window: any;
@@ -53,9 +53,11 @@ class Root extends React.Component<RootProps, any> {
     };
     let result = await getJsConfig(activityId, window.location.href.split('#')[0]);
     let config = result.data;
-    this.configShare(config);
+    this.configShare(config, user.objectId, activityId);
   }
-  configShare(config) {
+  configShare(config, userId, activityId) {
+    window.userId = userId;
+    window.activityId = activityId;
     window.wx.config({
       debug: false,
       appId: config['appId'],
@@ -133,6 +135,17 @@ const mapState2Props = (state) => {
   };
 };
 
+let sendAnalysisShare = () => {
+  let url = window.location.href;
+  let reg = /-p_(.*)-/gi;
+  let result = reg.exec(url);
+  let parentId = null;
+  if (result) {
+    parentId = result[1];
+  }
+  analysisShare(window.userId, window.activityId, window._wxData.wxlink, parentId);
+};
+
 window.changeWx = () => {
   window.wx.onMenuShareAppMessage({
     title: window._wxData.wxtitle,
@@ -146,7 +159,11 @@ window.changeWx = () => {
       }
     },
     cancel: function() {},
-    fail: function() {}
+    fail: function() {
+      try {
+        sendAnalysisShare();
+      } catch (error) {}
+    }
   });
 
   window.wx.onMenuShareTimeline({
@@ -160,7 +177,11 @@ window.changeWx = () => {
       }
     },
     cancel: function() {},
-    fail: function() {}
+    fail: function() {
+      try {
+        sendAnalysisShare();
+      } catch (error) {}
+    }
   });
 };
 const mapDispatch2Props = ({

@@ -21,6 +21,10 @@ export const addVote = (activityId, id) => {
   return axios.post(`/api/vote/addVote/${activityId}/${id}`);
 };
 
+export const analysisShare = (userId, activityId, url, parentId) => {
+  return axios.post(`/api/analysis/share`, { userId, activityId, url, parentId });
+};
+
 export const delVoteItem = (activityId, id) => {
   return axios.delete(`/api/vote/delVoteItem/${activityId}/${id}`);
 };
