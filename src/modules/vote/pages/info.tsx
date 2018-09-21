@@ -15,6 +15,7 @@ export interface InfoProps {
   addVote;
   activity;
   clearVoteItem;
+  user;
 }
 
 class Info extends React.Component<InfoProps, any> {
@@ -55,11 +56,11 @@ class Info extends React.Component<InfoProps, any> {
   }
   async componentWillMount() {
     let { id } = this.props.match.params;
-    let { activityId, activity } = this.props;
+    let { activityId, activity, user } = this.props;
     let vote_item = await this.props.getVoteItem({ activityId, id });
     window._wxData = {
       wxtitle: `快来为《${vote_item.title}》投票吧！`,
-      wxlink: window.location.href,
+      wxlink: `${activity.domain}/${activityId}/#/vote/info/${id}/-p_${user.objectId}-/`,
       wxdesc: activity.share_desc,
       wximgUrl: `${vote_item.pic}-700`
     };
@@ -242,7 +243,8 @@ const mapState2Props = (state) => {
     activity: state.activity,
     show_info_back: state.activity.show_info_back,
     vote_item: state.vote.vote_item,
-    primary_color: state.activity.primary_color
+    primary_color: state.activity.primary_color,
+    user: state.user
   };
 };
 
