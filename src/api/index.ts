@@ -39,7 +39,8 @@ export const getVoteItems = (
   limit = 10,
   skip = 0,
   order: IOrder = { key: 'createdAt', type: 'desc' },
-  category = null
+  category = null,
+  search = null
 ) => {
   const Activity = Parse.Object.extend('activity');
   let activity = new Activity();
@@ -48,16 +49,19 @@ export const getVoteItems = (
   const query = new Parse.Query(VoteItem);
   query.equalTo('activity', activity);
   query.equalTo('status', 0);
-  query.skip(skip);
-  query.limit(limit);
   if (category) {
     query.equalTo('category', category);
+  }
+  if (search) {
+    query.fullText('title', search);
   }
   if (order.type == 'desc') {
     query.descending(order.key);
   } else {
     query.ascending(order.key);
   }
+  query.skip(skip);
+  query.limit(limit);
   return query.find();
 };
 
