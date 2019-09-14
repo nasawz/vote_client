@@ -51,7 +51,8 @@ export default class Card extends React.Component<CardProps, any> {
                 color: 'rgb(255, 255, 255)'
               }}
             >
-              {parseInt(index) + 1}
+              编号：
+              {parseInt(opus.num)}
             </div>
             <img src={`${opus.pic}-700`} className="FlowItem__avatar" />
           </div>
@@ -71,7 +72,7 @@ export default class Card extends React.Component<CardProps, any> {
           </span>
           <span className="FlowItem__vote-num-desc">票</span>
         </div>
-        <div className="FlowItem__btn">
+        <div className="FlowItem__btn" style={{ display: 'none' }}>
           <div>
             <button
               onClick={this.sendVote.bind(this, opus.objectId)}

@@ -25,11 +25,11 @@ function startDevServer() {
   /*=============proxy start==============*/
   (() => {
     const proxy_options = {
-      target: 'http://vote.baleina.cn/',
-      // target: 'http://localhost:1337/',
+      // target: 'http://sel.baleina.cn/',
+      target: 'http://localhost:1337/',
       secure: false,
       changeOrigin: true,
-      ws: true,
+      ws: false,
       ignorePath: false,
       pathRewrite: {
         // '^/api': ''
@@ -44,14 +44,14 @@ function startDevServer() {
       target: `http://localhost:${config.port}/`,
       secure: false,
       changeOrigin: true,
-      ws: true,
+      ws: false,
       ignorePath: false,
       pathRewrite: {
-        '^/VmAbYNivv5': ''
+        '^/sel/HKhMeGg5e8': ''
       }
     };
     const webProxy = proxy(proxy_options);
-    app.use('/VmAbYNivv5/*', webProxy);
+    app.use('/sel/HKhMeGg5e8/*', webProxy);
   })();
   /*=============proxy end================*/
 

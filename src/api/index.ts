@@ -3,7 +3,7 @@ import axios from 'axios';
 declare let window;
 
 export const getActivity = (activityId) => {
-  const Activity = Parse.Object.extend('activity');
+  const Activity = Parse.Object.extend('vote_activity');
   const query = new Parse.Query(Activity);
   query.equalTo('objectId', activityId);
   return query.first();
@@ -22,7 +22,7 @@ export const addVote = (activityId, id) => {
 };
 
 export const analysisShare = (userId, activityId, url, parentId) => {
-  return axios.post(`/api/analysis/share`, { userId, activityId, url, parentId });
+  // return axios.post(`/api/analysis/share`, { userId, activityId, url, parentId });
 };
 
 export const delVoteItem = (activityId, id) => {
@@ -42,7 +42,7 @@ export const getVoteItems = (
   category = null,
   search = null
 ) => {
-  const Activity = Parse.Object.extend('activity');
+  const Activity = Parse.Object.extend('vote_activity');
   let activity = new Activity();
   activity.id = activityId;
   const VoteItem = Parse.Object.extend('vote_item');
@@ -84,5 +84,6 @@ export const touch = () => {
 };
 
 export const getJsConfig = (activityId, url) => {
-  return axios.post(`/api/wx/jsconfig/${activityId}`, { url });
+  // return axios.post(`/api/wx/jsconfig/${activityId}`, { url });
+  return axios.post(`/api/wx/jsconfig/xGY6o7uncr`, { url });
 };

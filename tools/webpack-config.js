@@ -64,7 +64,7 @@ module.exports = (type) => {
     ]),
     output: {
       // publicPath: isDist ? 'http://ces00.b0.upaiyun.com/edas/' : '',
-      publicPath: isDist ? '/' : '',
+      publicPath: isDist ? './' : '',
       filename: isDist
         ? `bundle/${pkgJson.version}/[name].[hash:8].js`
         : `bundle/${pkgJson.version}/[name].js`,

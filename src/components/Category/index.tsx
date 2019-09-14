@@ -31,6 +31,10 @@ export default class Category extends React.Component<CategoryProps, any> {
     });
   }
   public render() {
-    return <ul className="Header__statistics-wrap">{this.renderItem()}</ul>;
+    let { categories } = this.props;
+    if (categories && categories.length > 1) {
+      return <ul className="Header__statistics-wrap">{this.renderItem()}</ul>;
+    }
+    return '';
   }
 }

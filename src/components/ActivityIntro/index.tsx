@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import ReactMarkdown from 'react-markdown';
 
 export interface ActivityIntroProps {
   desc;
@@ -36,7 +37,9 @@ export default class ActivityIntro extends React.Component<ActivityIntroProps, a
         <span className={classnames(cls)}>
           <span className="Header__label-name">活动介绍：</span>
           <br />
-          <span>{desc}</span>
+          <div className="markdown-body">
+            <ReactMarkdown source={desc} />
+          </div>
         </span>
         <a
           href="javascript:void(0)"

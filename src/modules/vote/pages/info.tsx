@@ -60,7 +60,7 @@ class Info extends React.Component<InfoProps, any> {
     let vote_item = await this.props.getVoteItem({ activityId, id });
     window._wxData = {
       wxtitle: `快来为《${vote_item.title}》投票吧！`,
-      wxlink: `${activity.domain}/${activityId}/#/vote/info/${id}/-p_${user.objectId}-/`,
+      wxlink: `${activity.domain}/vote/${activityId}/#/vote/info/${id}/-p_${user.objectId}-/`,
       wxdesc: activity.share_desc,
       wximgUrl: `${vote_item.pic}-700`
     };
@@ -119,7 +119,7 @@ class Info extends React.Component<InfoProps, any> {
         </span>
         <span className="Detail__label-name">距离结束</span>
         <span className="Detail__count-down"> {time}</span>
-        <button
+        {/* <button
           className="Detail__vote-btn"
           style={{
             borderColor: primary_color,
@@ -128,7 +128,7 @@ class Info extends React.Component<InfoProps, any> {
           onClick={this.doAddVote.bind(this)}
         >
           投我一票
-        </button>
+        </button> */}
       </li>
     );
   }
@@ -168,6 +168,11 @@ class Info extends React.Component<InfoProps, any> {
             {this.renderCountDown()}
             <li className="Detail__tr">
               <div className="Detail__un-present-rank">
+                <div className="Detail__vote-num">编号： {vote_item.num} </div>
+              </div>
+            </li>
+            <li className="Detail__tr">
+              <div className="Detail__un-present-rank">
                 <div className="Detail__vote-num">已投 {vote_item.score} 票</div>
                 <div className="Detail__rank">
                   当前为第
@@ -176,6 +181,9 @@ class Info extends React.Component<InfoProps, any> {
               </div>
             </li>
           </ul>
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <img style={{ width: '100px' }} src="assets/images/logo.png" />
+          </div>
           <ul className="Detail__activity-info" style={{ display: show_info_back ? '' : 'none' }}>
             <img
               src=""

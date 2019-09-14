@@ -13,6 +13,7 @@ export interface OpusProps {
   addVoteItem;
   activityId;
   getMyVoteItem;
+  my_vote_item;
 }
 
 class Opus extends React.Component<OpusProps, any> {
@@ -21,7 +22,7 @@ class Opus extends React.Component<OpusProps, any> {
     this.state = {
       uploading: false,
       imgUrl: '',
-      category: null,
+      category: '默认',
       title: '',
       desc: '',
       showPubConfirmModal: false,
@@ -111,7 +112,7 @@ class Opus extends React.Component<OpusProps, any> {
           data: {
             title,
             desc,
-            category: category[0],
+            category: category,
             pic: imgUrl
           }
         });
@@ -138,7 +139,7 @@ class Opus extends React.Component<OpusProps, any> {
       loading,
       pubResult
     } = this.state;
-    let { primary_color, categorys } = this.props;
+    let { primary_color, categorys, my_vote_item } = this.props;
     let cls = {
       'PubImgUpload__add-img': true,
       disabled: imgUrl ? true : false
@@ -164,7 +165,7 @@ class Opus extends React.Component<OpusProps, any> {
             </span>
           </div>
         </ul>
-        <ul className="Pub__panel Pub__category-wrap">
+        <ul className="Pub__panel Pub__category-wrap" style={{ display: 'none' }}>
           <Picker
             data={_.map(categorys, (c) => {
               return {
@@ -287,16 +288,16 @@ class Opus extends React.Component<OpusProps, any> {
             </ul>
             <div className="PubConfirm__content">
               <ul className="PubConfirm__avatar-wrap">
-                <img src={imgUrl != '' ? `${imgUrl}-75` : ''} className="PubConfirm__avatar" />
-                <div className="PubConfirm__avatar-num">
+                <img src={imgUrl != '' ? `${imgUrl}-720` : ''} style={{ width: '100%' }} />
+                {/* <div className="PubConfirm__avatar-num">
                   <i className="k-i-image PubConfirm__image-font" />
-                </div>
+                </div> */}
               </ul>
               <ul className="PubConfirm__label">
                 名称：
                 {title}
               </ul>
-              <ul className="PubConfirm__label">
+              <ul className="PubConfirm__label" style={{ display: 'none' }}>
                 类别：
                 {category}
               </ul>
@@ -337,6 +338,11 @@ class Opus extends React.Component<OpusProps, any> {
               <p className="PubConfirm__remind">
                 {pubResult == 'succ' ? '报名信息已提交成功' : '报名信息提交失败'}
               </p>
+              <p className="PubConfirm__remind">
+                您的作品编号：
+                {my_vote_item ? my_vote_item.num : ''}
+              </p>
+
               <button
                 className="PubConfirm__back"
                 style={{ backgroundColor: primary_color, color: 'rgb(255, 255, 255)' }}
@@ -362,7 +368,8 @@ const mapState2Props = (state) => {
     title: state.activity.title,
     activityId: state.activity.objectId,
     categorys: state.activity.categorys,
-    primary_color: state.activity.primary_color
+    primary_color: state.activity.primary_color,
+    my_vote_item: state.vote.my_vote_item
   };
 };
 

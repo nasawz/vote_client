@@ -156,6 +156,9 @@ class Rank extends React.Component<RankProps, any> {
             </div>
           </div>
         </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <img style={{ width: '100px' }} src="assets/images/logo.png" />
+        </div>
       </div>
     );
   }

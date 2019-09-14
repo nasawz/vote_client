@@ -68,6 +68,7 @@ class Me extends React.Component<MeProps, any> {
                   <p className="signUpInformation__name">名称: {my_vote_item.title}</p>
                   <p className="signUpInformation__introduction">分类: {my_vote_item.category}</p>
                   <p className="signUpInformation__introduction">详细介绍: {my_vote_item.desc}</p>
+                  <p className="signUpInformation__introduction">编号: {my_vote_item.num}</p>
                   <p className="signUpInformation__introduction">
                     当前为第
                     {my_vote_item.rank}名

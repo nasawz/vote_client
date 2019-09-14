@@ -24,18 +24,19 @@ class Root extends React.Component<RootProps, any> {
     let { pathname } = window.location;
     let user = await this.props.getUserAsync();
 
-    let activityId = pathname.replace(/\//g, '');
+    let activityId = pathname.replace(/\/sel\//g, '').replace(/\//g, '');
     let activity = await this.props.getActivityData(activityId);
     if (!user) {
       let url = encodeURIComponent(window.location.href);
       let auth_url = '';
       // auth_type 0 微信认证 1 企业认证
-      if (activity.auth_type == 0) {
-        auth_url = `/api/wx/auth/${activityId}`;
-      }
-      if (activity.auth_type == 1) {
-        auth_url = `/api/qywx/auth/${activityId}`;
-      }
+      auth_url = `/api/wx/auth/xGY6o7uncr`;
+      // if (activity.auth_type == 0) {
+      //   auth_url = `/api/wx/auth/${activityId}`;
+      // }
+      // if (activity.auth_type == 1) {
+      //   auth_url = `/api/qywx/auth/${activityId}`;
+      // }
       window.location.href = `${auth_url}?callback=${url}`;
       return;
     }

@@ -323,6 +323,9 @@ class List extends React.Component<ListProps, any> {
           />
         </div>
         <div>{this.renderListView()}</div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <img style={{ width: '100px' }} src="assets/images/logo.png" />
+        </div>
         <Alert show={show} img={img} remind={remind} doClose={this.hideAlert.bind(this)} />
       </div>
     );
